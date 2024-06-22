@@ -1,6 +1,6 @@
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Step 1: Start the Metro Server
 
@@ -22,7 +22,23 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 make android
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ shortly provided you have set up your emulator correctly.
+
+### For IOS
+
+Only the first time you have to install ios dependancies
+
+```bash
+make ios-install
+```
+
+Then
+
+```bash
+make ios
+```
+
+If everything is set up _correctly_, you should see your new app running in your _iOS Simulator_ shortly provided you have set up your simulator correctly.
 
 ## Step 3: Modifying your App
 
