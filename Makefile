@@ -19,10 +19,8 @@ start: ## Start the application, do it in its own terminal
 android: ## Open in android emulator, do it in another terminal
 	npm run android
 
-.PHONY: ios
-ios: #In another terminal
+ios: ## Open in ios emulator, do it in another terminal
 	npm run ios
 
-.PHONY: build-ios
 ios-install:
 	cd ios/ && pod install

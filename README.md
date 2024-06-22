@@ -22,7 +22,7 @@ Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _roo
 make android
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ shortly provided you have set up your emulator correctly.
 
 ### For IOS
 
@@ -38,7 +38,7 @@ Then
 make ios
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+If everything is set up _correctly_, you should see your new app running in your _iOS Simulator_ shortly provided you have set up your simulator correctly.
 
 ## Step 3: Modifying your App
 
