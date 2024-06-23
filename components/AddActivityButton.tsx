@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 
-export const AddActivityButton = () => {
-    const addActivity = () => {
-        // Ajoutez ici la logique pour ajouter une activité
-    };
+type AddActivityButtonProps = {
+    onPress: () => void;
+};
+export const AddActivityButton = ({ onPress }:AddActivityButtonProps) => {
+
   return (
           <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={addActivity} activeOpacity={0.7}>
+              <TouchableOpacity style={styles.button} onPress={onPress} activeOpacity={0.7}>
                   <Text style={styles.buttonText}>+</Text>
               </TouchableOpacity>
           </View>
   );
-
 
 };
 
