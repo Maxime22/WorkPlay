@@ -1,12 +1,12 @@
 // redux/timerSlice.ts
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-interface TimerState {
+export interface TimerState {
   value: number;
   isRunning: boolean;
 }
 
-const initialState: TimerState = {
+export const initialState: TimerState = {
   value: 0,
   isRunning: false,
 };
