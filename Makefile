@@ -19,7 +19,7 @@ start: ## Start the application, do it in its own terminal
 android: ## Open in android emulator, do it in another terminal
 	npm run android
 
-ios: ## Open in ios emulator, do it in another terminal
+ios: ios-install ## Open in ios emulator, do it in another terminal
 	npm run ios
 
 ios-install:
