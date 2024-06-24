@@ -24,3 +24,7 @@ ios: ## Open in ios emulator, do it in another terminal
 
 ios-install:
 	cd ios/ && pod install
+
+##@ Tests
+test:
+	npm test
