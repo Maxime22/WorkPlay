@@ -44,6 +44,7 @@ export const AddActivity = ({addInput}:AddActivityProps) => {
                             style={styles.input}
                             value={newTitle}
                             onChangeText={setNewTitle}
+                            placeholder="Enter Title"
                         />
                         <Button title="Save" onPress={handleSaveTitle} />
                     </View>
