@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react-native';
 import WorkPlayApp from '../App.tsx';
-import {loadInputs, addInput as addInputUtil, deleteInput as deleteInputUtil, deleteInput} from '../utils/storageUtils';
+import {loadInputs, addInput as addInputUtil, deleteInput as deleteInputUtil, deleteInput} from '../utils/StorageUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
     getItem: jest.fn(),
     setItem: jest.fn(),
 }));
 
-jest.mock('../utils/storageUtils', () => ({
+jest.mock('../utils/StorageUtils.ts', () => ({
     loadInputs: jest.fn(),
     addInput: jest.fn(),
     deleteInput: jest.fn(),

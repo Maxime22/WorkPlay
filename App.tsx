@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {FlatList, View} from 'react-native';
 import { AddActivity } from './components/AddActivity/AddActivity.tsx';
 import { WorkInput } from "./components/WorkInput/WorkInput.tsx";
-import { loadInputs, addInput as addInputUtil, deleteInput as deleteInputUtil } from './utils/storageUtils';
+import { loadInputs, addInput as addInputUtil, deleteInput as deleteInputUtil } from './utils/StorageUtils.ts';
 
 const WorkPlayApp = () => {
     const [inputs, setInputs] = useState<string[]>([]);
