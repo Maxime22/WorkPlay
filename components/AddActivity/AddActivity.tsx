@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Modal, TextInput, Button, StyleSheet, Text } from 'react-native';
-import { AddActivityButton } from './AddActivityButton';
+import {View, Modal, TextInput, Button, Text, Alert, TouchableOpacity} from 'react-native';
+import { AddActivityButton } from './AddActivityButton.tsx';
+import { styles } from './AddActivity.style.ts';
 
 type AddActivityProps = {
     addInput: (title:string) => void;
@@ -10,9 +11,13 @@ export const AddActivity = ({addInput}:AddActivityProps) => {
     const [newTitle, setNewTitle] = useState('');
 
     const handleSaveTitle = () => {
-        addInput(newTitle);
-        setNewTitle('');
-        setModalVisible(false);
+        if (newTitle.trim() !== '') {
+            addInput(newTitle);
+            setNewTitle('');
+            setModalVisible(false);
+        } else {
+            Alert.alert('Title cannot be empty');
+        }
     };
 
     return (
@@ -28,6 +33,12 @@ export const AddActivity = ({addInput}:AddActivityProps) => {
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalView}>
+                        <TouchableOpacity
+                            style={styles.closeButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={styles.closeButtonText}>×</Text>
+                        </TouchableOpacity>
                         <Text style={styles.modalText}>Enter Title:</Text>
                         <TextInput
                             style={styles.input}
@@ -42,34 +53,4 @@ export const AddActivity = ({addInput}:AddActivityProps) => {
     );
 };
 
-const styles = StyleSheet.create({
-    addActivityContainer: {
-        flex: 1,
-        position:'relative',
-    },
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    modalView: {
-        width: 300,
-        padding: 20,
-        backgroundColor: 'white',
-        borderRadius: 10,
-        alignItems: 'center',
-    },
-    modalText: {
-        marginBottom: 15,
-        fontSize: 18,
-    },
-    input: {
-        width: '100%',
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        marginBottom: 15,
-        paddingHorizontal: 10,
-    },
-});
+
