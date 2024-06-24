@@ -15,6 +15,7 @@ export const WorkInput = ({inputTitle,index,deleteInput}:WorkInputProps) => {
             style={styles.textInput}
             keyboardType="numeric"
             maxLength={10}
+            placeholder="Enter value"
         />
         <TouchableOpacity onPress={() => deleteInput(index)} style={styles.deleteButton}>
             <Text style={styles.deleteButtonText}>Delete</Text>
