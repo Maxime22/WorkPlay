@@ -1,6 +1,4 @@
 module.exports = {
   preset: 'react-native',
-  testMatch: [
-    "**/tests/**/*.test.tsx",
-  ],
+  testMatch: ['**/tests/**/*.test.tsx'],
 };
