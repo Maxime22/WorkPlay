@@ -30,8 +30,8 @@ test:
 	npm test
 
 ##@ Lint
-lint-check:
+lint-check: ## Check lint rules
 	npm run lint
 
-lint-fix:
+lint-fix: ## Fix lint with ESLint rules
 	npm run lint:fix
