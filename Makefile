@@ -28,3 +28,10 @@ ios-install:
 ##@ Tests
 test:
 	npm test
+
+##@ Lint
+lint-check:
+	npm run lint
+
+lint-fix:
+	npm run lint:fix
