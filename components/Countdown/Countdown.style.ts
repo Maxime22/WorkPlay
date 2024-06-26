@@ -3,24 +3,31 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   countdownContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 16
   },
   countdownText: {
     fontSize: 60,
   },
-  button: {
-    width: 60,
+  startAndStopButtonContainer: {
+    flex: 1,
+    flexDirection:'row',
+    gap: 16
+  },
+  startButton: {
+    width: 120,
     height: 60,
-    borderRadius: 30,
     backgroundColor: '#2196F3',
+    justifyContent: "center",
+    alignItems:"center"
+  },
+  stopButton: {
+    width: 120,
+    height: 60,
+    backgroundColor: '#aa6f73',
     justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
+    alignItems: "center"
   },
   buttonText: {
     color: 'white',
