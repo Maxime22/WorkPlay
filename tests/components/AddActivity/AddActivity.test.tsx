@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
-import {AddActivity} from '../../components/AddActivity/AddActivity.tsx';
+import {AddActivity} from '../../../components/AddActivity/AddActivity.tsx';
 import {Alert} from 'react-native';
 
 jest.mock('react-native/Libraries/Alert/Alert', () => ({

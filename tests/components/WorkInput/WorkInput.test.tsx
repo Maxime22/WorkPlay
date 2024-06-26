@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
-import {WorkInput} from '../../components/WorkInput/WorkInput.tsx';
+import {WorkInput} from '../../../components/WorkInput/WorkInput.tsx';
 
 describe('WorkInput', () => {
   const mockDeleteInput = jest.fn();

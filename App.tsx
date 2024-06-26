@@ -7,6 +7,7 @@ import {
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
 } from './utils/StorageUtils.ts';
+import {Countdown} from './components/Countdown/Countdown.tsx';
 
 const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<string[]>([]);
@@ -25,6 +26,7 @@ const WorkPlayApp = () => {
 
   return (
     <View className="flex-1 padding-16">
+      <Countdown />
       <FlatList
         data={inputs}
         keyExtractor={index => {
