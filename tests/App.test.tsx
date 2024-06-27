@@ -142,7 +142,7 @@ describe('WorkPlayApp', () => {
 
     expect(PushNotification.localNotificationSchedule).toHaveBeenCalledWith({
       channelId: 'default-channel-id',
-      message: 'My Notification Message',
+      message: 'Fin de jeu',
       date: expect.any(Date), // Ensures a date object is passed
       allowWhileIdle: false,
       repeatTime: 1,
