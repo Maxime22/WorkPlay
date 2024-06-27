@@ -11,6 +11,7 @@ import {
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
 } from '../utils/StorageUtils.ts';
+import PushNotification from 'react-native-push-notification';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
@@ -21,6 +22,11 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   loadInputs: jest.fn(),
   addInput: jest.fn(),
   deleteInput: jest.fn(),
+}));
+
+jest.mock('react-native-push-notification', () => ({
+  localNotificationSchedule: jest.fn(),
+  configure: jest.fn(),
 }));
 
 describe('WorkPlayApp', () => {
@@ -129,5 +135,17 @@ describe('WorkPlayApp', () => {
       0,
       expect.any(Function),
     );
+  });
+
+  it('should schedule a notification on mount', () => {
+    render(<WorkPlayApp />);
+
+    expect(PushNotification.localNotificationSchedule).toHaveBeenCalledWith({
+      channelId: 'default-channel-id',
+      message: 'My Notification Message',
+      date: expect.any(Date), // Ensures a date object is passed
+      allowWhileIdle: false,
+      repeatTime: 1,
+    });
   });
 });
