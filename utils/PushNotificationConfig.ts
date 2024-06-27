@@ -5,6 +5,11 @@ PushNotification.configure({
   onNotification: function (notification) {
     console.log('LOCAL NOTIFICATION ==>', notification);
   },
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true,
+  },
   popInitialNotification: true,
-  requestPermissions: Platform.OS === 'ios', // par la magie du saint esprit cela règle le pb sur Android du Firebase not initialisé
+  requestPermissions: Platform.OS === 'ios', // solved Firebase not itinialized problem
 });
