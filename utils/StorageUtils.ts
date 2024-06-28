@@ -1,7 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+type InputItem = { title: string; value: string };
+
 export const loadInputs = async (
-  setInputs: React.Dispatch<React.SetStateAction<string[]>>,
+  setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
 ) => {
   try {
     const storedInputs = await AsyncStorage.getItem('inputs');
@@ -13,7 +15,7 @@ export const loadInputs = async (
   }
 };
 
-export const saveInputs = async (inputs: string[]) => {
+export const saveInputs = async (inputs: InputItem[]) => {
   try {
     await AsyncStorage.setItem('inputs', JSON.stringify(inputs));
   } catch (error) {
@@ -22,19 +24,19 @@ export const saveInputs = async (inputs: string[]) => {
 };
 
 export const addInput = (
-  inputs: string[],
-  title: string,
-  setInputs: React.Dispatch<React.SetStateAction<string[]>>,
+    inputs: InputItem[],
+    newInput: InputItem,
+    setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
 ) => {
-  const newInputs = [...inputs, title];
+  const newInputs = [...inputs, newInput];
   setInputs(newInputs);
   saveInputs(newInputs);
 };
 
 export const deleteInput = (
-  inputs: string[],
+  inputs: InputItem[],
   index: number,
-  setInputs: React.Dispatch<React.SetStateAction<string[]>>,
+  setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
 ) => {
   const newInputs = inputs.filter((_, i) => i !== index);
   setInputs(newInputs);

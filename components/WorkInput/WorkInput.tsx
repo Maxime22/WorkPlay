@@ -6,8 +6,10 @@ type WorkInputProps = {
   inputTitle: string;
   index: number;
   deleteInput: (index: number) => void;
+    timeActivity: string;
+    onTimeActivityChange: (index: number, value: string) => void;
 };
-export const WorkInput = ({inputTitle, index, deleteInput}: WorkInputProps) => {
+export const WorkInput = ({inputTitle, index, deleteInput, timeActivity, onTimeActivityChange}: WorkInputProps) => {
   return (
     <View key={index} style={styles.inputContainer}>
       <Text style={styles.inputTitle}>{inputTitle}</Text>
@@ -16,6 +18,8 @@ export const WorkInput = ({inputTitle, index, deleteInput}: WorkInputProps) => {
         keyboardType="numeric"
         maxLength={10}
         placeholder="Enter value"
+        value={timeActivity}
+        onChangeText={(text) => onTimeActivityChange(index, text)}
       />
       <TouchableOpacity
         onPress={() => deleteInput(index)}

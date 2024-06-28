@@ -2,7 +2,11 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import { styles } from './Countdown.style.ts';
 
-export const Countdown = () => {
+type CountdownProps = {
+  calculateUserTime: () => number;
+  resetInputs: () => void;
+};
+export const Countdown = ({calculateUserTime, resetInputs}:CountdownProps) => {
   const [time, setTime] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -15,7 +19,9 @@ export const Countdown = () => {
   }, []);
 
   function startCountdown() {
-    setTime(3600);
+    const userTime = calculateUserTime();
+    resetInputs();
+    setTime(userTime * 60); // Suppose that userTime is in minutes, convert to seconds
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }

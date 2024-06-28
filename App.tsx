@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {FlatList, View} from 'react-native';
 import {AddActivity} from './components/AddActivity/AddActivity';
 import {WorkInput} from './components/WorkInput/WorkInput';
@@ -10,33 +10,52 @@ import {
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';
 
+type InputItem = { title: string; value: string };
 
 const WorkPlayApp = () => {
-  const [inputs, setInputs] = useState<string[]>([]);
+  const [inputs, setInputs] = useState<InputItem[]>([]);
 
-  useEffect(() => {
-    loadInputs(setInputs);
-  }, []);
+    useEffect(() => {
+        loadInputs(setInputs);
+    }, []);
 
-  const addInput = (title: string) => {
-    addInputUtil(inputs, title, setInputs);
-  };
+    const addInput = (title: string) => {
+        const newInput: InputItem = { title, value: '' };
+        addInputUtil(inputs, newInput, setInputs);
+    };
 
   const deleteInput = (index: number) => {
-    deleteInputUtil(inputs, index, setInputs);
+      deleteInputUtil(inputs, index, setInputs);
   };
+
+    const handleTimeActivityChange = (index: number, value: string) => {
+        const newInputs = [...inputs];
+        newInputs[index].value = value;
+        setInputs(newInputs);
+    };
+
+    const calculateUserTime = (): number => {
+        return inputs.reduce((total, input) => total + parseFloat(input.value || '0'), 0);
+    };
+
+    const resetInputs = () => {
+        const newInputs = inputs.map(input => ({ ...input, value: '0' }));
+        setInputs(newInputs);
+    };
 
   return (
     <View className="flex-1 padding-16">
-      <Countdown />
+      <Countdown calculateUserTime={calculateUserTime} resetInputs={resetInputs} />
       <FlatList
         data={inputs}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(index) => index.toString()}
         renderItem={({item, index}) => (
           <WorkInput
-            inputTitle={item}
+            inputTitle={item.title}
             deleteInput={deleteInput}
             index={index}
+            timeActivity={item.value}
+            onTimeActivityChange={handleTimeActivityChange}
           />
         )}
       />
