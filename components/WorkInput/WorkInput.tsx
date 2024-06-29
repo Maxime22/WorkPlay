@@ -4,14 +4,14 @@ import {styles} from './WorkInput.style.ts';
 
 type WorkInputProps = {
   inputTitle: string;
-  index: number;
-  deleteInput: (index: number) => void;
+  id: string;
+  deleteInput: () => void;
     timeActivity: string;
-    onTimeActivityChange: (index: number, value: string) => void;
+    onTimeActivityChange: (id: string, value: string) => void;
 };
-export const WorkInput = ({inputTitle, index, deleteInput, timeActivity, onTimeActivityChange}: WorkInputProps) => {
+export const WorkInput = ({inputTitle, id, deleteInput, timeActivity, onTimeActivityChange}: WorkInputProps) => {
   return (
-    <View key={index} style={styles.inputContainer}>
+    <View key={id} style={styles.inputContainer}>
       <Text style={styles.inputTitle}>{inputTitle}</Text>
       <TextInput
         style={styles.textInput}
@@ -19,10 +19,10 @@ export const WorkInput = ({inputTitle, index, deleteInput, timeActivity, onTimeA
         maxLength={10}
         placeholder="Enter value"
         value={timeActivity}
-        onChangeText={(text) => onTimeActivityChange(index, text)}
+        onChangeText={(text) => onTimeActivityChange(id, text)}
       />
       <TouchableOpacity
-        onPress={() => deleteInput(index)}
+        onPress={deleteInput}
         style={styles.deleteButton}>
         <Text style={styles.deleteButtonText}>Delete</Text>
       </TouchableOpacity>

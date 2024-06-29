@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type InputItem = { title: string; value: string };
+type InputItem = { title: string; value: string; id:string };
 
 export const loadInputs = async (
   setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
@@ -35,10 +35,10 @@ export const addInput = (
 
 export const deleteInput = (
   inputs: InputItem[],
-  index: number,
+  id: string,
   setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
 ) => {
-  const newInputs = inputs.filter((_, i) => i !== index);
+  const newInputs = inputs.filter((input) => input.id !== id);
   setInputs(newInputs);
   saveInputs(newInputs);
 };
