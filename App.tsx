@@ -9,7 +9,7 @@ import {
 } from './utils/StorageUtils.ts';
 import {Countdown} from './components/Countdown/Countdown.tsx';
 
-type InputItem = { title: string; value: string };
+type InputItem = { title: string; value: string; id: string };
 const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<InputItem[]>([]);
 
@@ -18,17 +18,18 @@ const WorkPlayApp = () => {
     }, []);
 
     const addInput = (title: string) => {
-        const newInput: InputItem = { title, value: '' };
+        const newInput: InputItem = { title, value: '', id: Math.random().toString() };
         addInputUtil(inputs, newInput, setInputs);
     };
 
-  const deleteInput = (index: number) => {
-      deleteInputUtil(inputs, index, setInputs);
+  const deleteInput = (id: string) => {
+      deleteInputUtil(inputs, id, setInputs);
   };
 
-    const handleTimeActivityChange = (index: number, value: string) => {
-        const newInputs = [...inputs];
-        newInputs[index].value = value;
+    const handleTimeActivityChange = (id: string, value: string) => {
+        const newInputs = inputs.map(input =>
+            input.id === id ? { ...input, value } : input
+        );
         setInputs(newInputs);
     };
 
@@ -46,14 +47,12 @@ const WorkPlayApp = () => {
       <Countdown calculateUserTime={calculateUserTime} resetInputs={resetInputs} />
       <FlatList
         data={inputs}
-        keyExtractor={index => {
-          return index.toString();
-        }}
+        keyExtractor={(item) => item.id}
         renderItem={({item, index}) => (
           <WorkInput
             inputTitle={item.title}
-            deleteInput={deleteInput}
-            index={index}
+            deleteInput={() => deleteInput(item.id)}
+            id={item.id}
             timeActivity={item.value}
             onTimeActivityChange={handleTimeActivityChange}
           />
