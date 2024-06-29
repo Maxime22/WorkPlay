@@ -12,6 +12,11 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 }));
 
 describe('storageUtils', () => {
+  const mockInputs = [
+    { title: 'Task 1', value: 'Value 1', id: '1' },
+    { title: 'Task 2', value: 'Value 2', id: '2' },
+  ];
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -19,13 +24,13 @@ describe('storageUtils', () => {
   it('loads inputs correctly', async () => {
     const mockSetInputs = jest.fn();
     (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
-      JSON.stringify(['Task 1', 'Task 2']),
+        JSON.stringify(mockInputs),
     );
 
     await loadInputs(mockSetInputs);
 
     expect(AsyncStorage.getItem).toHaveBeenCalledWith('inputs');
-    expect(mockSetInputs).toHaveBeenCalledWith(['Task 1', 'Task 2']);
+    expect(mockSetInputs).toHaveBeenCalledWith(mockInputs);
   });
 
   it('handles loading inputs with no stored data', async () => {
@@ -39,33 +44,38 @@ describe('storageUtils', () => {
   });
 
   it('saves inputs correctly', async () => {
-    await saveInputs(['Task 1', 'Task 2']);
+    await saveInputs(mockInputs);
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       'inputs',
-      JSON.stringify(['Task 1', 'Task 2']),
+      JSON.stringify(mockInputs),
     );
   });
 
   it('adds an input correctly', async () => {
     const mockSetInputs = jest.fn();
-    await addInput(['Task 1'], 'Task 2', mockSetInputs);
+    const newInput = { title: 'Task 3', value: 'Value 3', id: '3' };
+    const expectedInputs = [...mockInputs, newInput];
 
-    expect(mockSetInputs).toHaveBeenCalledWith(['Task 1', 'Task 2']);
+    addInput(mockInputs, newInput, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       'inputs',
-      JSON.stringify(['Task 1', 'Task 2']),
+      JSON.stringify(expectedInputs),
     );
   });
 
   it('deletes an input correctly', async () => {
     const mockSetInputs = jest.fn();
-    await deleteInput(['Task 1', 'Task 2'], 0, mockSetInputs);
+    const expectedInputs = [mockInputs[1]]; // Remove the first item
 
-    expect(mockSetInputs).toHaveBeenCalledWith(['Task 2']);
+    deleteInput(mockInputs, '1', mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       'inputs',
-      JSON.stringify(['Task 2']),
+      JSON.stringify(expectedInputs),
     );
   });
 });
