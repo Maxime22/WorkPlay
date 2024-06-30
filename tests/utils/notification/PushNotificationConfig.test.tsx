@@ -13,10 +13,12 @@ describe('PushNotificationConfig', () => {
   });
 
   it('should configure PushNotification correctly', () => {
-    require('../../utils/PushNotificationConfig.ts');
+    require('../../../utils/notification/PushNotificationConfig.ts');
 
     expect(PushNotification.configure).toHaveBeenCalledWith({
+      /*
       onNotification: expect.any(Function),
+      */
       permissions: {
         alert: true,
         badge: true,

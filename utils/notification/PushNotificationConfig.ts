@@ -2,9 +2,11 @@ import {Platform} from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
 PushNotification.configure({
+  /*
   onNotification: function (notification) {
-    console.log('LOCAL NOTIFICATION ==>', notification);
+    // Do something
   },
+  */
   permissions: {
     alert: true,
     badge: true,
