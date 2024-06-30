@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type InputItem = { title: string; value: string; id:string };
+import {InputItem} from "../App.tsx";
 
 export const loadInputs = async (
   setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
