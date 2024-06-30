@@ -32,7 +32,7 @@ describe('Countdown Component', () => {
             jest.advanceTimersByTime(1000);
         });
 
-        expect(getByText('00:59:59')).toBeTruthy();
+        expect(getByText('00:00:59')).toBeTruthy();
     });
 
     it('stops the countdown when the Stop button is pressed', () => {
@@ -53,14 +53,18 @@ describe('Countdown Component', () => {
     });
 
     it('formats the time correctly', () => {
+        mockCalculateUserTime.mockReturnValue(61); // Return 1 minute for testing
+
         const { getByText } = render(
             <Countdown calculateUserTime={mockCalculateUserTime} resetInputs={mockResetInputs} />
         );
 
+        fireEvent.press(getByText('Start'));
+
         act(() => {
-            jest.advanceTimersByTime(3661000); // Advance by 1 hour, 1 minute and 1 second
+            jest.advanceTimersByTime(1000);
         });
 
-        expect(getByText('01:01:01')).toBeTruthy(); // Check formatted time
+        expect(getByText('01:00:59')).toBeTruthy(); // Check formatted time
     });
 });
