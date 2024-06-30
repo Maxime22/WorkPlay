@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {FlatList, View} from 'react-native';
 import {AddActivity} from './components/AddActivity/AddActivity.tsx';
 import {WorkInput} from './components/WorkInput/WorkInput.tsx';
@@ -7,34 +7,66 @@ import {
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
 } from './utils/StorageUtils.ts';
+import {Countdown} from './components/Countdown/Countdown.tsx';
 
-const WorkPlayApp = () => {
-  const [inputs, setInputs] = useState<string[]>([]);
+export type InputItem = { title: string; value: string; id: string };
+export const WorkPlayApp = () => {
+  const [inputs, setInputs] = useState<InputItem[]>([]);
+    const [isCountdownRunning, setIsCountdownRunning] = useState(false);
 
-  useEffect(() => {
-    loadInputs(setInputs);
-  }, []);
 
-  const addInput = (title: string) => {
-    addInputUtil(inputs, title, setInputs);
+    useEffect(() => {
+        loadInputs(setInputs);
+    }, []);
+
+    const addInput = (title: string) => {
+        const newInput: InputItem = { title, value: '', id: Math.random().toString() };
+        addInputUtil(inputs, newInput, setInputs);
+    };
+
+  const deleteInput = (id: string) => {
+      deleteInputUtil(inputs, id, setInputs);
   };
 
-  const deleteInput = (index: number) => {
-    deleteInputUtil(inputs, index, setInputs);
-  };
+    const handleTimeActivityChange = (id: string, value: string) => {
+        const newInputs = inputs.map(input =>
+            input.id === id ? { ...input, value } : input
+        );
+        setInputs(newInputs);
+    };
 
-  return (
+    const calculateUserTime = (): number => {
+        return inputs.reduce((total, input) => total + parseFloat(input.value || '0'), 0);
+    };
+
+    const resetInputs = () => {
+        const newInputs = inputs.map(input => ({ ...input, value: '0' }));
+        setInputs(newInputs);
+    };
+
+    const handleStartCountdown = () => {
+        setIsCountdownRunning(true);
+    };
+
+    const handleStopCountdown = () => {
+        setIsCountdownRunning(false);
+    };
+
+
+    return (
     <View className="flex-1 padding-16">
+      <Countdown calculateUserTime={calculateUserTime} resetInputs={resetInputs} onStart={handleStartCountdown} onStop={handleStopCountdown}  />
       <FlatList
         data={inputs}
-        keyExtractor={index => {
-          return index.toString();
-        }}
+        keyExtractor={(item) => item.id}
         renderItem={({item, index}) => (
           <WorkInput
-            inputTitle={item}
-            deleteInput={deleteInput}
-            index={index}
+            inputTitle={item.title}
+            deleteInput={() => deleteInput(item.id)}
+            id={item.id}
+            timeActivity={item.value}
+            onTimeActivityChange={handleTimeActivityChange}
+            isDisabled={isCountdownRunning}
           />
         )}
       />
