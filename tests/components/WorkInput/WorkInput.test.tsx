@@ -11,6 +11,7 @@ describe('WorkInput', () => {
     deleteInput: mockDeleteInput,
     timeActivity: '0',
     onTimeActivityChange: mockTimeActivityChange,
+    isDisabled: false,
   };
 
   it('renders correctly', () => {
@@ -25,7 +26,7 @@ describe('WorkInput', () => {
     expect(getByText('Test Title')).toBeTruthy();
   });
 
-  it('calls deleteInput with the correct index when delete button is pressed', () => {
+  it('calls deleteInput when delete button is pressed', () => {
     const {getByText} = render(<WorkInput {...props} />);
     fireEvent.press(getByText('Delete'));
     expect(mockDeleteInput).toHaveBeenCalled();
@@ -35,5 +36,20 @@ describe('WorkInput', () => {
     const {getByPlaceholderText} = render(<WorkInput {...props} />);
     fireEvent(getByPlaceholderText('Enter value'), 'onChangeText', '10');
     expect(mockTimeActivityChange).toHaveBeenCalledWith('1', '10');
+  });
+
+  it('disables text input when isDisabled is true', () => {
+    const disabledProps = { ...props, isDisabled: true };
+    const { getByPlaceholderText, getByText } = render(<WorkInput {...disabledProps} />);
+    const textInput = getByPlaceholderText('Enter value');
+
+    expect(textInput.props.editable).toBe(false);
+  });
+
+  it('enables text input when isDisabled is false', () => {
+    const { getByPlaceholderText, getByText } = render(<WorkInput {...props} />);
+    const textInput = getByPlaceholderText('Enter value');
+
+    expect(textInput.props.editable).toBe(true);
   });
 });

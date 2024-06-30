@@ -8,8 +8,9 @@ type WorkInputProps = {
   deleteInput: () => void;
     timeActivity: string;
     onTimeActivityChange: (id: string, value: string) => void;
+    isDisabled: boolean;
 };
-export const WorkInput = ({inputTitle, id, deleteInput, timeActivity, onTimeActivityChange}: WorkInputProps) => {
+export const WorkInput = ({inputTitle, id, deleteInput, timeActivity, onTimeActivityChange, isDisabled}: WorkInputProps) => {
   return (
     <View key={id} style={styles.inputContainer}>
       <Text style={styles.inputTitle}>{inputTitle}</Text>
@@ -20,6 +21,7 @@ export const WorkInput = ({inputTitle, id, deleteInput, timeActivity, onTimeActi
         placeholder="Enter value"
         value={timeActivity}
         onChangeText={(text) => onTimeActivityChange(id, text)}
+        editable={!isDisabled}
       />
       <TouchableOpacity
         onPress={deleteInput}
