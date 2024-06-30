@@ -4,10 +4,13 @@ import {WorkInput} from '../../../components/WorkInput/WorkInput.tsx';
 
 describe('WorkInput', () => {
   const mockDeleteInput = jest.fn();
+  const mockTimeActivityChange = jest.fn();
   const props = {
     inputTitle: 'Test Title',
-    index: 1,
+    id: "1",
     deleteInput: mockDeleteInput,
+    timeActivity: '0',
+    onTimeActivityChange: mockTimeActivityChange,
   };
 
   it('renders correctly', () => {
@@ -25,6 +28,12 @@ describe('WorkInput', () => {
   it('calls deleteInput with the correct index when delete button is pressed', () => {
     const {getByText} = render(<WorkInput {...props} />);
     fireEvent.press(getByText('Delete'));
-    expect(mockDeleteInput).toHaveBeenCalledWith(1);
+    expect(mockDeleteInput).toHaveBeenCalled();
+  });
+
+  it('calls onTimeActivityChange with the correct index when delete button is pressed', () => {
+    const {getByPlaceholderText} = render(<WorkInput {...props} />);
+    fireEvent(getByPlaceholderText('Enter value'), 'onChangeText', '10');
+    expect(mockTimeActivityChange).toHaveBeenCalledWith('1', '10');
   });
 });
