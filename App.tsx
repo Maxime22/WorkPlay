@@ -13,6 +13,8 @@ import {Countdown} from './components/Countdown/Countdown.tsx';
 export type InputItem = { title: string; value: string; id: string };
 export const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<InputItem[]>([]);
+    const [isCountdownRunning, setIsCountdownRunning] = useState(false);
+
 
     useEffect(() => {
         loadInputs(setInputs);
@@ -43,9 +45,18 @@ export const WorkPlayApp = () => {
         setInputs(newInputs);
     };
 
-  return (
+    const handleStartCountdown = () => {
+        setIsCountdownRunning(true);
+    };
+
+    const handleStopCountdown = () => {
+        setIsCountdownRunning(false);
+    };
+
+
+    return (
     <View className="flex-1 padding-16">
-      <Countdown calculateUserTime={calculateUserTime} resetInputs={resetInputs} />
+      <Countdown calculateUserTime={calculateUserTime} resetInputs={resetInputs} onStart={handleStartCountdown} onStop={handleStopCountdown}  />
       <FlatList
         data={inputs}
         keyExtractor={(item) => item.id}
@@ -56,6 +67,7 @@ export const WorkPlayApp = () => {
             id={item.id}
             timeActivity={item.value}
             onTimeActivityChange={handleTimeActivityChange}
+            isDisabled={isCountdownRunning}
           />
         )}
       />

@@ -5,8 +5,10 @@ import { styles } from './Countdown.style.ts';
 type CountdownProps = {
   calculateUserTime: () => number;
   resetInputs: () => void;
+  onStart: () => void;
+  onStop: () => void;
 };
-export const Countdown = ({calculateUserTime, resetInputs}:CountdownProps) => {
+export const Countdown = ({calculateUserTime, resetInputs, onStart, onStop}:CountdownProps) => {
   const [time, setTime] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -22,6 +24,7 @@ export const Countdown = ({calculateUserTime, resetInputs}:CountdownProps) => {
     const userTime = calculateUserTime();
     resetInputs();
     setTime(userTime * 60); // Suppose that userTime is in minutes, convert to seconds
+    onStart();
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
@@ -43,6 +46,7 @@ export const Countdown = ({calculateUserTime, resetInputs}:CountdownProps) => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
+    onStop();
   }
 
   const formatTime = (time: number) => {

@@ -145,4 +145,36 @@ describe('WorkPlayApp', () => {
       expect.any(Function),
     );
   });
+
+  it('disables inputs when the countdown is running and enables them when it stops', async () => {
+    const mockInputs: InputItem[] = [
+      { title: 'Task 1', value: '', id: '1' },
+      { title: 'Task 2', value: '', id: '2' },
+    ];
+    (loadInputs as jest.Mock).mockImplementation(
+        async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+          setInputs(mockInputs);
+        },
+    );
+
+    render(<WorkPlayApp />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Task 1')).toBeTruthy();
+      expect(screen.getByText('Task 2')).toBeTruthy();
+    });
+
+    fireEvent.press(screen.getByText('Start'));
+
+    const textInputs = screen.getAllByPlaceholderText('Enter value');
+    textInputs.forEach(input => {
+      expect(input.props.editable).toBe(false);
+    });
+
+    fireEvent.press(screen.getByText('Stop'));
+
+    textInputs.forEach(input => {
+      expect(input.props.editable).toBe(true);
+    });
+  });
 });
