@@ -10,8 +10,8 @@ import {
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';
 
-type InputItem = { title: string; value: string; id: string };
-const WorkPlayApp = () => {
+export type InputItem = { title: string; value: string; id: string };
+export const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<InputItem[]>([]);
 
     useEffect(() => {

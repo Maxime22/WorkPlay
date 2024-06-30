@@ -5,7 +5,7 @@ import {
   waitFor,
   screen,
 } from '@testing-library/react-native';
-import WorkPlayApp from '../App.tsx';
+import { WorkPlayApp, InputItem } from '../App.tsx';
 import {
   loadInputs,
   addInput as addInputUtil,
@@ -35,7 +35,7 @@ describe('WorkPlayApp', () => {
 
   it('renders correctly', () => {
     (loadInputs as jest.Mock).mockImplementation(
-      async (setInputs: React.Dispatch<React.SetStateAction<string[]>>) => {
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
         setInputs([]);
       },
     );
@@ -44,9 +44,12 @@ describe('WorkPlayApp', () => {
   });
 
   it('loads inputs on mount', async () => {
-    const mockInputs = ['Task 1', 'Task 2'];
+    const mockInputs: InputItem[] = [
+      { title: 'Task 1', value: '', id: '1' },
+      { title: 'Task 2', value: '', id: '2' },
+    ];
     (loadInputs as jest.Mock).mockImplementation(
-      async (setInputs: React.Dispatch<React.SetStateAction<string[]>>) => {
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
         setInputs(mockInputs);
       },
     );
@@ -63,17 +66,17 @@ describe('WorkPlayApp', () => {
 
   it('adds a new input', async () => {
     (loadInputs as jest.Mock).mockImplementation(
-      async (setInputs: React.Dispatch<React.SetStateAction<string[]>>) => {
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
         setInputs([]);
       },
     );
     (addInputUtil as jest.Mock).mockImplementation(
       (
-        inputs: string[],
-        title: string,
-        setInputs: React.Dispatch<React.SetStateAction<string[]>>,
+        inputs: InputItem[],
+        newInput: InputItem,
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
       ) => {
-        setInputs([...inputs, title]);
+        setInputs([...inputs, newInput]);
       },
     );
 
@@ -92,25 +95,32 @@ describe('WorkPlayApp', () => {
 
     expect(addInputUtil).toHaveBeenCalledWith(
       [],
-      'New Task',
+        expect.objectContaining({
+          title: 'New Task',
+          value: '',
+          id: expect.any(String),
+        }),
       expect.any(Function),
     );
   });
 
   it('deletes an input', async () => {
-    const mockInputs = ['Task 1', 'Task 2'];
+    const mockInputs: InputItem[] = [
+      { title: 'Task 1', value: '', id: '1' },
+      { title: 'Task 2', value: '', id: '2' },
+    ];
     (loadInputs as jest.Mock).mockImplementation(
-      async (setInputs: React.Dispatch<React.SetStateAction<string[]>>) => {
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
         setInputs(mockInputs);
       },
     );
     (deleteInputUtil as jest.Mock).mockImplementation(
       (
-        inputs: string[],
-        index: number,
-        setInputs: React.Dispatch<React.SetStateAction<string[]>>,
+        inputs: InputItem[],
+        id: string,
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
       ) => {
-        setInputs(inputs.filter((input: string, i: number) => i !== index));
+        setInputs(inputs.filter((input) => input.id !== id));
       },
     );
 
@@ -131,7 +141,7 @@ describe('WorkPlayApp', () => {
 
     expect(deleteInputUtil).toHaveBeenCalledWith(
       mockInputs,
-      0,
+      '1',
       expect.any(Function),
     );
   });
