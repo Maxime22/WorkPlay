@@ -26,14 +26,6 @@ If everything is set up _correctly_, you should see your new app running in your
 
 ### For IOS
 
-Only the first time you have to install ios dependancies
-
-```bash
-make ios-install
-```
-
-Then
-
 ```bash
 make ios
 ```

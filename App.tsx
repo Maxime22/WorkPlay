@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {FlatList, View} from 'react-native';
-import {AddActivity} from './components/AddActivity/AddActivity.tsx';
-import {WorkInput} from './components/WorkInput/WorkInput.tsx';
+import {AddActivity} from './components/AddActivity/AddActivity';
+import {WorkInput} from './components/WorkInput/WorkInput';
 import {
   loadInputs,
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
-} from './utils/StorageUtils.ts';
+} from './utils/StorageUtils';
+import './utils/notification/PushNotificationConfig';
 
 const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<string[]>([]);
@@ -27,9 +28,7 @@ const WorkPlayApp = () => {
     <View className="flex-1 padding-16">
       <FlatList
         data={inputs}
-        keyExtractor={index => {
-          return index.toString();
-        }}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({item, index}) => (
           <WorkInput
             inputTitle={item}

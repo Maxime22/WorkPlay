@@ -23,6 +23,11 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   deleteInput: jest.fn(),
 }));
 
+jest.mock('react-native-push-notification', () => ({
+  localNotificationSchedule: jest.fn(),
+  configure: jest.fn(),
+}));
+
 describe('WorkPlayApp', () => {
   beforeEach(() => {
     jest.resetAllMocks();
