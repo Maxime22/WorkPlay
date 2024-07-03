@@ -26,6 +26,7 @@ jest.mock('../utils/StorageUtils.ts', () => ({
 jest.mock('react-native-push-notification', () => ({
   localNotificationSchedule: jest.fn(),
   configure: jest.fn(),
+  createChannel: jest.fn(),
 }));
 
 describe('WorkPlayApp', () => {
