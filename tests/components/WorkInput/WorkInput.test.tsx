@@ -7,7 +7,7 @@ describe('WorkInput', () => {
   const mockTimeActivityChange = jest.fn();
   const props = {
     inputTitle: 'Test Title',
-    id: "1",
+    id: '1',
     deleteInput: mockDeleteInput,
     timeActivity: '0',
     onTimeActivityChange: mockTimeActivityChange,
@@ -39,15 +39,15 @@ describe('WorkInput', () => {
   });
 
   it('disables text input when isDisabled is true', () => {
-    const disabledProps = { ...props, isDisabled: true };
-    const { getByPlaceholderText, getByText } = render(<WorkInput {...disabledProps} />);
+    const disabledProps = {...props, isDisabled: true};
+    const {getByPlaceholderText} = render(<WorkInput {...disabledProps} />);
     const textInput = getByPlaceholderText('Enter value');
 
     expect(textInput.props.editable).toBe(false);
   });
 
   it('enables text input when isDisabled is false', () => {
-    const { getByPlaceholderText, getByText } = render(<WorkInput {...props} />);
+    const {getByPlaceholderText} = render(<WorkInput {...props} />);
     const textInput = getByPlaceholderText('Enter value');
 
     expect(textInput.props.editable).toBe(true);
