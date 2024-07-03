@@ -1,6 +1,6 @@
 import React from 'react';
 import {render, fireEvent} from '@testing-library/react-native';
-import {AddActivityButton} from '../../components/AddActivity/AddActivityButton.tsx';
+import {AddActivityButton} from '../../../components/AddActivity/AddActivityButton.tsx';
 
 describe('AddActivityButton', () => {
   it('renders correctly + button', () => {
