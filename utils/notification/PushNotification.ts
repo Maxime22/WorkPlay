@@ -6,7 +6,7 @@ export function ScheduleNotification(delayInSeconds: number) {
   }
 
   PushNotification.localNotificationSchedule({
-    channelId: 'default-channel-id',
+    channelId: 'default-notification-channel-id',
     message: 'Fin de jeu',
     date: new Date(Date.now() + delayInSeconds * 1000),
     allowWhileIdle: false,
@@ -23,7 +23,7 @@ export function ScheduleAlarm(delayInSeconds: number) {
   }
 
   PushNotification.localNotificationSchedule({
-    channelId: 'alarm-channel-id',
+    channelId: 'alarm-notification-channel-id',
     message: 'Your alarm is ringing!',
     date: new Date(Date.now() + delayInSeconds * 1000),
     allowWhileIdle: true,

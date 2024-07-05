@@ -17,9 +17,6 @@ describe('PushNotificationConfig', () => {
     require('../../../utils/notification/PushNotificationConfig.ts');
 
     expect(PushNotification.configure).toHaveBeenCalledWith({
-      /*
-      onNotification: expect.any(Function),
-      */
       permissions: {
         alert: true,
         badge: true,

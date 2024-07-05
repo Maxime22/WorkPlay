@@ -20,7 +20,7 @@ describe('ScheduleNotification', () => {
 
     expect(PushNotification.localNotificationSchedule).toHaveBeenCalledWith(
       expect.objectContaining({
-        channelId: 'default-channel-id',
+        channelId: 'default-notification-channel-id',
         message: 'Fin de jeu',
         allowWhileIdle: false,
         playSound: true,
@@ -39,7 +39,7 @@ describe('ScheduleAlarm', () => {
 
     expect(PushNotification.localNotificationSchedule).toHaveBeenCalledWith(
       expect.objectContaining({
-        channelId: 'alarm-channel-id',
+        channelId: 'alarm-notification-channel-id',
         message: 'Your alarm is ringing!',
         allowWhileIdle: true,
         playSound: true,
