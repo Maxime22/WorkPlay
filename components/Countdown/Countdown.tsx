@@ -68,7 +68,7 @@ export const Countdown = ({
   }
 
   function stopCountdown() {
-    if (time !== 0) {
+    if (time > 0) {
       setRemainingTime(time);
       setAccumulatedTime(time);
       saveRemainingTime(time);
