@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, SafeAreaView} from 'react-native';
 import {AddActivity} from './components/AddActivity/AddActivity';
 import {WorkInput} from './components/WorkInput/WorkInput';
 import {
@@ -64,29 +64,31 @@ export const WorkPlayApp = () => {
   };
 
   return (
-    <View className="flex-1 padding-16">
-      <Countdown
-        calculateUserTime={calculateUserTime}
-        resetInputs={resetInputs}
-        onStart={handleStartCountdown}
-        onStop={handleStopCountdown}
-      />
-      <FlatList
-        data={inputs}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <WorkInput
-            inputTitle={item.title}
-            deleteInput={() => deleteInput(item.id)}
-            id={item.id}
-            timeActivity={item.value}
-            onTimeActivityChange={handleTimeActivityChange}
-            isDisabled={isCountdownRunning}
-          />
-        )}
-      />
-      <AddActivity addInput={addInput} />
-    </View>
+    <SafeAreaView className="flex-1">
+      <View className="flex-1 padding-16">
+        <Countdown
+          calculateUserTime={calculateUserTime}
+          resetInputs={resetInputs}
+          onStart={handleStartCountdown}
+          onStop={handleStopCountdown}
+        />
+        <FlatList
+          data={inputs}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => (
+            <WorkInput
+              inputTitle={item.title}
+              deleteInput={() => deleteInput(item.id)}
+              id={item.id}
+              timeActivity={item.value}
+              onTimeActivityChange={handleTimeActivityChange}
+              isDisabled={isCountdownRunning}
+            />
+          )}
+        />
+        <AddActivity addInput={addInput} />
+      </View>
+    </SafeAreaView>
   );
 };
 
