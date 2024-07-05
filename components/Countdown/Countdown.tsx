@@ -44,25 +44,27 @@ export const Countdown = ({
   function startCountdown() {
     const userTime = calculateUserTime() * 60;
     const totalTime = userTime + accumulatedTime;
-    resetInputs();
-    setTime(totalTime);
-    setRemainingTime(0);
-    setAccumulatedTime(0);
-    onStart();
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    intervalRef.current = setInterval(() => {
-      setTime(prevTime => {
-        if (prevTime === 0) {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
+    if (totalTime > 0) {
+      resetInputs();
+      setTime(totalTime);
+      setRemainingTime(0);
+      setAccumulatedTime(0);
+      onStart();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      intervalRef.current = setInterval(() => {
+        setTime(prevTime => {
+          if (prevTime === 0) {
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
+            return 0;
           }
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
+          return prevTime - 1;
+        });
+      }, 1000);
+    }
   }
 
   function stopCountdown() {

@@ -77,6 +77,31 @@ describe('Countdown Component', () => {
     expect(getByText('00:00:59')).toBeTruthy();
   });
 
+  it('does not start the countdown when the Start button is pressed but time is 0', () => {
+    mockCalculateUserTime.mockReturnValue(0);
+    AsyncStorage.getItem.mockResolvedValueOnce(JSON.stringify({time: 0}));
+    const {getByText} = render(
+      <Countdown
+        calculateUserTime={mockCalculateUserTime}
+        resetInputs={mockResetInputs}
+        onStart={mockOnStart}
+        onStop={mockOnStop}
+      />,
+    );
+
+    fireEvent.press(getByText('Start'));
+
+    expect(mockCalculateUserTime).toHaveBeenCalled();
+    expect(mockResetInputs).not.toHaveBeenCalled();
+    expect(mockOnStart).not.toHaveBeenCalled();
+
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(getByText('00:00:00')).toBeTruthy();
+  });
+
   it('stops the countdown when the Stop button is pressed', () => {
     mockCalculateUserTime.mockReturnValue(ONE_MINUTE); // Return 1 minute for testing
     const {getByText} = render(

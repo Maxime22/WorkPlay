@@ -150,8 +150,8 @@ describe('WorkPlayApp', () => {
 
   it('disables inputs when the countdown is running and enables them when it stops', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '', id: '1'},
-      {title: 'Task 2', value: '', id: '2'},
+      {title: 'Task 1', value: '1', id: '1'},
+      {title: 'Task 2', value: '2', id: '2'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
