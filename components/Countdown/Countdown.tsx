@@ -68,14 +68,16 @@ export const Countdown = ({
   }
 
   function stopCountdown() {
-    setRemainingTime(time);
-    setAccumulatedTime(time);
-    saveRemainingTime(time);
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
+    if (time > 0) {
+      setRemainingTime(time);
+      setAccumulatedTime(time);
+      saveRemainingTime(time);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      setTime(0);
+      onStop();
     }
-    setTime(0);
-    onStop();
   }
 
   const formatTime = (totalSeconds: number) => {

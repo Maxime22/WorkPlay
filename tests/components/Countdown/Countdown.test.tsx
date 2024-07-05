@@ -218,4 +218,21 @@ describe('Countdown Component', () => {
       expect.stringMatching(/{"time":57,"timestamp":[0-9]+}/),
     );
   });
+
+  it('does not stop the countdown when Stop button is pressed but time is 0', () => {
+    const {getByText} = render(
+      <Countdown
+        calculateUserTime={mockCalculateUserTime}
+        resetInputs={mockResetInputs}
+        onStart={mockOnStart}
+        onStop={mockOnStop}
+      />,
+    );
+
+    fireEvent.press(getByText('Stop'));
+
+    expect(mockOnStop).not.toHaveBeenCalled();
+    expect(getByText('00:00:00')).toBeTruthy();
+    expect(getByText('Temps restant : 00:00:00')).toBeTruthy();
+  });
 });
