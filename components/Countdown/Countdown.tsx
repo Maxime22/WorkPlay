@@ -44,7 +44,7 @@ export const Countdown = ({
   function startCountdown() {
     const userTime = calculateUserTime() * 60;
     const totalTime = userTime + accumulatedTime;
-    if (totalTime !== 0) {
+    if (totalTime > 0) {
       resetInputs();
       setTime(totalTime);
       setRemainingTime(0);
