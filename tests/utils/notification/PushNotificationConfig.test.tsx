@@ -4,6 +4,7 @@ import PushNotification from 'react-native-push-notification';
 // Mock the PushNotification library
 jest.mock('react-native-push-notification', () => ({
   configure: jest.fn(),
+  createChannel: jest.fn(),
 }));
 
 describe('PushNotificationConfig', () => {
@@ -16,9 +17,6 @@ describe('PushNotificationConfig', () => {
     require('../../../utils/notification/PushNotificationConfig.ts');
 
     expect(PushNotification.configure).toHaveBeenCalledWith({
-      /*
-      onNotification: expect.any(Function),
-      */
       permissions: {
         alert: true,
         badge: true,
