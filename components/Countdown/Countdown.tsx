@@ -59,8 +59,10 @@ export const Countdown = ({
             if (intervalRef.current) {
               clearInterval(intervalRef.current);
             }
+            saveRemainingTime(0);
             return 0;
           }
+          saveRemainingTime(prevTime - 1);
           return prevTime - 1;
         });
       }, 1000);
