@@ -321,9 +321,9 @@ describe('WorkPlayApp', () => {
       {title: 'Task 2', value: '10', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
-        async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
-          setInputs(mockInputs);
-        },
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+        setInputs(mockInputs);
+      },
     );
 
     const {getByTestId, getByText} = render(<WorkPlayApp />);
@@ -334,7 +334,7 @@ describe('WorkPlayApp', () => {
     });
 
     // Change the ratio of the first input
-    const picker = getByTestId('picker-'+mockInputs[0].id);
+    const picker = getByTestId('picker-' + mockInputs[0].id);
     fireEvent(picker, 'onValueChange', '2');
 
     // Simulate starting the countdown

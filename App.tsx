@@ -5,7 +5,8 @@ import {WorkInput} from './components/WorkInput/WorkInput';
 import {
   loadInputs,
   addInput as addInputUtil,
-  deleteInput as deleteInputUtil, saveInputs,
+  deleteInput as deleteInputUtil,
+  saveInputs,
 } from './utils/StorageUtils';
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';

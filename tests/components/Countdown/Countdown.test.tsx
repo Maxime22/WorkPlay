@@ -221,13 +221,13 @@ describe('Countdown Component', () => {
 
   it('saves remaining time on start', async () => {
     mockCalculateUserTime.mockReturnValue(ONE_MINUTE);
-    const { getByText } = render(
-        <Countdown
-            calculateUserTime={mockCalculateUserTime}
-            resetInputs={mockResetInputs}
-            onStart={mockOnStart}
-            onStop={mockOnStop}
-        />,
+    const {getByText} = render(
+      <Countdown
+        calculateUserTime={mockCalculateUserTime}
+        resetInputs={mockResetInputs}
+        onStart={mockOnStart}
+        onStop={mockOnStop}
+      />,
     );
 
     fireEvent.press(getByText('Start'));
@@ -237,8 +237,8 @@ describe('Countdown Component', () => {
     });
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        'remainingTime',
-        expect.stringMatching(/{"time":59,"timestamp":[0-9]+}/),
+      'remainingTime',
+      expect.stringMatching(/{"time":59,"timestamp":[0-9]+}/),
     );
   });
 

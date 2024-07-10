@@ -9,7 +9,7 @@ type WorkInputProps = {
   deleteInput: () => void;
   timeActivity: string;
   ratio: string;
-    handleRatioChange: (id: string, ratio: string) => void;
+  handleRatioChange: (id: string, ratio: string) => void;
   onTimeActivityChange: (id: string, value: string) => void;
   isDisabled: boolean;
 };
@@ -19,11 +19,10 @@ export const WorkInput = ({
   deleteInput,
   timeActivity,
   ratio,
-                              handleRatioChange,
+  handleRatioChange,
   onTimeActivityChange,
   isDisabled,
 }: WorkInputProps) => {
-
   return (
     <View key={id} style={styles.inputContainer}>
       <Text style={styles.inputTitle}>{inputTitle}</Text>
@@ -38,7 +37,7 @@ export const WorkInput = ({
       />
       <TimeDifficultyRatio
         selectedRatio={ratio}
-        onRatioChange={value=> handleRatioChange(id, value)}
+        onRatioChange={value => handleRatioChange(id, value)}
         id={`${id}`}
       />
       <TouchableOpacity onPress={deleteInput} style={styles.deleteButton}>

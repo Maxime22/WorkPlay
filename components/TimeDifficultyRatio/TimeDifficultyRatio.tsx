@@ -12,7 +12,7 @@ type TimeDifficultyRatioProps = {
 export const TimeDifficultyRatio = ({
   selectedRatio,
   onRatioChange,
-    id
+  id,
 }: TimeDifficultyRatioProps) => {
   return (
     <View style={styles.container}>
