@@ -58,7 +58,7 @@ describe('WorkInput', () => {
 
   it('calls handleRatioChange with the correct value when the ratio changes', () => {
     const {getByTestId} = render(<WorkInput {...props} />);
-    const picker = getByTestId('pickerTestID');
+    const picker = getByTestId('picker-'+props.id)
 
     // Simuler le changement de valeur
     fireEvent(picker, 'onValueChange', '2');

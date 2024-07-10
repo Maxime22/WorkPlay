@@ -6,7 +6,7 @@ import {TimeDifficultyRatio} from '../../../components/TimeDifficultyRatio/TimeD
 describe('TimeDifficultyRatio', () => {
     it('renders correctly', () => {
         const {getByText} = render(
-            <TimeDifficultyRatio selectedRatio="1" onRatioChange={() => {}} />
+            <TimeDifficultyRatio selectedRatio="1" onRatioChange={() => {}} id="1" />
         );
 
         // Vérifier que le texte du label est correct
@@ -16,10 +16,10 @@ describe('TimeDifficultyRatio', () => {
     it('calls onRatioChange with the correct value when a new item is selected', () => {
         const onRatioChangeMock = jest.fn();
         const {getByTestId} = render(
-            <TimeDifficultyRatio selectedRatio="1" onRatioChange={onRatioChangeMock} />
+            <TimeDifficultyRatio selectedRatio="1" onRatioChange={onRatioChangeMock} id="1" />
         );
 
-        const picker = getByTestId('pickerTestID');
+        const picker = getByTestId('picker-1');
 
         // Simuler le changement de valeur
         fireEvent(picker, 'onValueChange', '2');
@@ -32,10 +32,10 @@ describe('TimeDifficultyRatio', () => {
 
     it('renders all picker items correctly', () => {
         const {getByTestId} = render(
-            <TimeDifficultyRatio selectedRatio="1" onRatioChange={() => {}} />
+            <TimeDifficultyRatio selectedRatio="1" onRatioChange={() => {}} id="1" />
         );
 
-        const picker = getByTestId('pickerTestID');
+        const picker = getByTestId('picker-1');
         const items = picker.props.items;
 
         // Vérifier que toutes les options du Picker sont présentes

@@ -5,12 +5,17 @@ import {WorkInput} from './components/WorkInput/WorkInput';
 import {
   loadInputs,
   addInput as addInputUtil,
-  deleteInput as deleteInputUtil,
+  deleteInput as deleteInputUtil, saveInputs,
 } from './utils/StorageUtils';
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';
 
-export type InputItem = {title: string; value: string; id: string};
+export type InputItem = {
+  title: string;
+  value: string;
+  id: string;
+  ratio: string;
+};
 export const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<InputItem[]>([]);
   const [isCountdownRunning, setIsCountdownRunning] = useState(false);
@@ -24,6 +29,7 @@ export const WorkPlayApp = () => {
       title,
       value: '',
       id: Math.random().toString(),
+      ratio: '1',
     };
     addInputUtil(inputs, newInput, setInputs);
   };
@@ -37,13 +43,23 @@ export const WorkPlayApp = () => {
       input.id === id ? {...input, value} : input,
     );
     setInputs(newInputs);
+    saveInputs(newInputs);
+  };
+
+  const handleRatioChange = (id: string, ratio: string) => {
+    const newInputs = inputs.map(input =>
+      input.id === id ? {...input, ratio} : input,
+    );
+    setInputs(newInputs);
+    saveInputs(newInputs);
   };
 
   const calculateUserTime = (): number => {
     if (inputs !== undefined && inputs.length > 0) {
       return inputs.reduce((total, input) => {
         const value = parseFloat(input.value);
-        return !isNaN(value) ? total + value : total;
+        const ratio = parseFloat(input.ratio);
+        return !isNaN(value) && !isNaN(ratio) ? total + value * ratio : total;
       }, 0);
     } else {
       return 0;
@@ -53,6 +69,7 @@ export const WorkPlayApp = () => {
   const resetInputs = () => {
     const newInputs = inputs.map(input => ({...input, value: '0'}));
     setInputs(newInputs);
+    saveInputs(newInputs);
   };
 
   const handleStartCountdown = () => {
@@ -81,6 +98,8 @@ export const WorkPlayApp = () => {
               deleteInput={() => deleteInput(item.id)}
               id={item.id}
               timeActivity={item.value}
+              ratio={item.ratio}
+              handleRatioChange={handleRatioChange}
               onTimeActivityChange={handleTimeActivityChange}
               isDisabled={isCountdownRunning}
             />

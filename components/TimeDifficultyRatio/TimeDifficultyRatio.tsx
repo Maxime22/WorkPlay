@@ -6,17 +6,19 @@ import {Picker} from '@react-native-picker/picker';
 type TimeDifficultyRatioProps = {
   selectedRatio: string;
   onRatioChange: (value: string) => void;
+  id: string;
 };
 
 export const TimeDifficultyRatio = ({
   selectedRatio,
   onRatioChange,
+    id
 }: TimeDifficultyRatioProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Difficulté</Text>
       <Picker
-          testID='pickerTestID'
+        testID={`picker-${id}`}
         selectedValue={selectedRatio}
         style={styles.picker}
         onValueChange={onRatioChange}>

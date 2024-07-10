@@ -23,6 +23,7 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   deleteInput: jest.fn(),
   loadRemainingTime: jest.fn(),
   saveRemainingTime: jest.fn(),
+  saveInputs: jest.fn(),
 }));
 
 jest.mock('react-native-push-notification', () => ({
@@ -47,8 +48,8 @@ describe('WorkPlayApp', () => {
 
   it('loads inputs on mount', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '', id: '1'},
-      {title: 'Task 2', value: '', id: '2'},
+      {title: 'Task 1', value: '', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -108,8 +109,8 @@ describe('WorkPlayApp', () => {
 
   it('deletes an input', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '', id: '1'},
-      {title: 'Task 2', value: '', id: '2'},
+      {title: 'Task 1', value: '', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -150,8 +151,8 @@ describe('WorkPlayApp', () => {
 
   it('disables inputs when the countdown is running and enables them when it stops', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '1', id: '1'},
-      {title: 'Task 2', value: '2', id: '2'},
+      {title: 'Task 1', value: '1', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '2', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -311,6 +312,37 @@ describe('WorkPlayApp', () => {
     // Check if the countdown shows the correct total time (in seconds converted to hh:mm:ss format)
     await waitFor(() => {
       expect(getByText('00:05:00')).toBeTruthy(); // Total time is 5 minutes -> 5*60=300 seconds
+    });
+  });
+
+  it('handles ratio changes correctly', async () => {
+    const mockInputs: InputItem[] = [
+      {title: 'Task 1', value: '5', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '10', id: '2', ratio: '1'},
+    ];
+    (loadInputs as jest.Mock).mockImplementation(
+        async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+          setInputs(mockInputs);
+        },
+    );
+
+    const {getByTestId, getByText} = render(<WorkPlayApp />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Task 1')).toBeTruthy();
+      expect(screen.getByText('Task 2')).toBeTruthy();
+    });
+
+    // Change the ratio of the first input
+    const picker = getByTestId('picker-'+mockInputs[0].id);
+    fireEvent(picker, 'onValueChange', '2');
+
+    // Simulate starting the countdown
+    fireEvent.press(getByText('Start'));
+
+    // Check if the countdown shows the correct total time (in seconds converted to hh:mm:ss format)
+    await waitFor(() => {
+      expect(getByText('00:20:00')).toBeTruthy(); // Total time is 5*2 + 10*1 = 20 minutes
     });
   });
 });

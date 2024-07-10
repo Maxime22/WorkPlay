@@ -39,6 +39,7 @@ export const WorkInput = ({
       <TimeDifficultyRatio
         selectedRatio={ratio}
         onRatioChange={value=> handleRatioChange(id, value)}
+        id={`${id}`}
       />
       <TouchableOpacity onPress={deleteInput} style={styles.deleteButton}>
         <Text style={styles.deleteButtonText}>Delete</Text>
