@@ -6,6 +6,7 @@ import {
   deleteInput,
   loadRemainingTime,
   saveRemainingTime,
+  resetInputs,
 } from '../../utils/StorageUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -117,5 +118,18 @@ describe('storageUtils', () => {
 
     expect(AsyncStorage.getItem).toHaveBeenCalledWith('remainingTime');
     expect(remainingTime).toBeNull();
+  });
+
+  it('resets inputs correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const expectedInputs = mockInputs.map(input => ({...input, value: '0'}));
+
+    resetInputs(mockInputs, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
   });
 });

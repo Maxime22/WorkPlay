@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import {InputItem} from '../App.tsx';
+import {InputItem} from '../models/InputItem';
 
 export const loadInputs = async (
   setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
@@ -69,4 +68,13 @@ export const loadRemainingTime = async () => {
     console.error('Failed to load remaining time', error);
     return null;
   }
+};
+
+export const resetInputs = (
+  inputs: InputItem[],
+  setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+) => {
+  const newInputs = inputs.map(input => ({...input, value: '0'}));
+  setInputs(newInputs);
+  saveInputs(newInputs); // j'ai rajouté cela
 };

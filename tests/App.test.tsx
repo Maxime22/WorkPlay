@@ -5,7 +5,7 @@ import {
   waitFor,
   screen,
 } from '@testing-library/react-native';
-import {WorkPlayApp, InputItem} from '../App.tsx';
+import {WorkPlayApp} from '../App.tsx';
 import {
   loadInputs,
   addInput as addInputUtil,
@@ -21,6 +21,7 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   loadInputs: jest.fn(),
   addInput: jest.fn(),
   deleteInput: jest.fn(),
+  resetInputs: jest.fn(),
   loadRemainingTime: jest.fn(),
   saveRemainingTime: jest.fn(),
 }));
