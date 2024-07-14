@@ -5,11 +5,14 @@ import {WorkInput} from '../../../components/WorkInput/WorkInput.tsx';
 describe('WorkInput', () => {
   const mockDeleteInput = jest.fn();
   const mockTimeActivityChange = jest.fn();
+  const mockHandleRatioChange = jest.fn();
   const props = {
     inputTitle: 'Test Title',
     id: '1',
     deleteInput: mockDeleteInput,
     timeActivity: '0',
+    ratio: '1',
+    handleRatioChange: mockHandleRatioChange,
     onTimeActivityChange: mockTimeActivityChange,
     isDisabled: false,
   };
@@ -51,5 +54,14 @@ describe('WorkInput', () => {
     const textInput = getByPlaceholderText('Enter value');
 
     expect(textInput.props.editable).toBe(true);
+  });
+
+  it('calls handleRatioChange with the correct value when the ratio changes', () => {
+    const {getByTestId} = render(<WorkInput {...props} />);
+    const picker = getByTestId('picker-' + props.id);
+
+    // Simuler le changement de valeur
+    fireEvent(picker, 'onValueChange', '2');
+    expect(mockHandleRatioChange).toHaveBeenCalledWith('1', '2');
   });
 });

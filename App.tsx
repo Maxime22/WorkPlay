@@ -4,13 +4,16 @@ import {AddActivity} from './components/AddActivity/AddActivity';
 import {WorkInput} from './components/WorkInput/WorkInput';
 import {
   loadInputs,
-  addInput as addInputUtil,
-  deleteInput as deleteInputUtil,
-} from './utils/StorageUtils';
+  addInput,
+  deleteInput,
+  resetInputs,
+  handleTimeActivityChange,
+  handleRatioChange,
+} from './utils/InputsUtils.ts';
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';
+import {InputItem} from './models/InputItem.ts';
 
-export type InputItem = {title: string; value: string; id: string};
 export const WorkPlayApp = () => {
   const [inputs, setInputs] = useState<InputItem[]>([]);
   const [isCountdownRunning, setIsCountdownRunning] = useState(false);
@@ -19,48 +22,16 @@ export const WorkPlayApp = () => {
     loadInputs(setInputs);
   }, []);
 
-  const addInput = (title: string) => {
-    const newInput: InputItem = {
-      title,
-      value: '',
-      id: Math.random().toString(),
-    };
-    addInputUtil(inputs, newInput, setInputs);
-  };
-
-  const deleteInput = (id: string) => {
-    deleteInputUtil(inputs, id, setInputs);
-  };
-
-  const handleTimeActivityChange = (id: string, value: string) => {
-    const newInputs = inputs.map(input =>
-      input.id === id ? {...input, value} : input,
-    );
-    setInputs(newInputs);
-  };
-
   const calculateUserTime = (): number => {
     if (inputs !== undefined && inputs.length > 0) {
       return inputs.reduce((total, input) => {
         const value = parseFloat(input.value);
-        return !isNaN(value) ? total + value : total;
+        const ratio = parseFloat(input.ratio);
+        return !isNaN(value) && !isNaN(ratio) ? total + value * ratio : total;
       }, 0);
     } else {
       return 0;
     }
-  };
-
-  const resetInputs = () => {
-    const newInputs = inputs.map(input => ({...input, value: '0'}));
-    setInputs(newInputs);
-  };
-
-  const handleStartCountdown = () => {
-    setIsCountdownRunning(true);
-  };
-
-  const handleStopCountdown = () => {
-    setIsCountdownRunning(false);
   };
 
   return (
@@ -68,9 +39,13 @@ export const WorkPlayApp = () => {
       <View className="flex-1 padding-16">
         <Countdown
           calculateUserTime={calculateUserTime}
-          resetInputs={resetInputs}
-          onStart={handleStartCountdown}
-          onStop={handleStopCountdown}
+          resetInputs={() => resetInputs(inputs, setInputs)}
+          onStart={() => {
+            setIsCountdownRunning(true);
+          }}
+          onStop={() => {
+            setIsCountdownRunning(false);
+          }}
         />
         <FlatList
           data={inputs}
@@ -78,15 +53,31 @@ export const WorkPlayApp = () => {
           renderItem={({item}) => (
             <WorkInput
               inputTitle={item.title}
-              deleteInput={() => deleteInput(item.id)}
+              deleteInput={() => deleteInput(inputs, item.id, setInputs)}
               id={item.id}
               timeActivity={item.value}
-              onTimeActivityChange={handleTimeActivityChange}
+              ratio={item.ratio}
+              handleRatioChange={(id, text) =>
+                handleRatioChange(id, text, inputs, setInputs)
+              }
+              onTimeActivityChange={(id, text) =>
+                handleTimeActivityChange(id, text, inputs, setInputs)
+              }
               isDisabled={isCountdownRunning}
             />
           )}
         />
-        <AddActivity addInput={addInput} />
+        <AddActivity
+          addInput={(title: string) => {
+            const newInput: InputItem = {
+              title,
+              value: '',
+              id: Math.random().toString(),
+              ratio: '1',
+            };
+            addInput(inputs, newInput, setInputs);
+          }}
+        />
       </View>
     </SafeAreaView>
   );

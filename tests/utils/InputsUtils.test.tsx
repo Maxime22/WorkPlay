@@ -4,19 +4,20 @@ import {
   saveInputs,
   addInput,
   deleteInput,
-  loadRemainingTime,
-  saveRemainingTime,
-} from '../../utils/StorageUtils.ts';
+  resetInputs,
+  handleRatioChange,
+  handleTimeActivityChange,
+} from '../../utils/InputsUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
 
-describe('storageUtils', () => {
+describe('inputsUtils', () => {
   const mockInputs = [
-    {title: 'Task 1', value: 'Value 1', id: '1'},
-    {title: 'Task 2', value: 'Value 2', id: '2'},
+    {title: 'Task 1', value: 'Value 1', id: '1', ratio: '1'},
+    {title: 'Task 2', value: 'Value 2', id: '2', ratio: '1'},
   ];
 
   beforeEach(() => {
@@ -56,7 +57,7 @@ describe('storageUtils', () => {
 
   it('adds an input correctly', async () => {
     const mockSetInputs = jest.fn();
-    const newInput = {title: 'Task 3', value: 'Value 3', id: '3'};
+    const newInput = {title: 'Task 3', value: 'Value 3', id: '3', ratio: '1'};
     const expectedInputs = [...mockInputs, newInput];
 
     addInput(mockInputs, newInput, mockSetInputs);
@@ -81,41 +82,50 @@ describe('storageUtils', () => {
     );
   });
 
-  it('saves remaining time correctly', async () => {
-    const mockTime = 120; // 2 minutes
-    await saveRemainingTime(mockTime);
+  it('resets inputs correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const expectedInputs = mockInputs.map(input => ({...input, value: '0'}));
 
+    resetInputs(mockInputs, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'remainingTime',
-      expect.stringMatching(/{"time":120,"timestamp":[0-9]+}/),
+      'inputs',
+      JSON.stringify(expectedInputs),
     );
   });
 
-  it('loads remaining time correctly', async () => {
-    const mockTime = 120; // 2 minutes
-    const mockTimestamp = new Date().getTime();
-    const mockStoredData = {time: mockTime, timestamp: mockTimestamp};
-
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(
-      JSON.stringify(mockStoredData),
+  it('handles time activity change correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const id = '1';
+    const newValue = 'New Value 1';
+    const expectedInputs = mockInputs.map(input =>
+      input.id === id ? {...input, value: newValue} : input,
     );
 
-    const remainingTime = await loadRemainingTime();
+    handleTimeActivityChange(id, newValue, mockInputs, mockSetInputs);
 
-    const currentTime = new Date().getTime();
-    const elapsedTime = Math.floor((currentTime - mockTimestamp) / 1000);
-    const expectedRemainingTime = mockTime - elapsedTime;
-
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('remainingTime');
-    expect(remainingTime).toBe(expectedRemainingTime);
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
   });
 
-  it('handles loading remaining time with no stored data', async () => {
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue(null);
+  it('handles ratio change correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const id = '2';
+    const newRatio = '2';
+    const expectedInputs = mockInputs.map(input =>
+      input.id === id ? {...input, ratio: newRatio} : input,
+    );
 
-    const remainingTime = await loadRemainingTime();
+    handleRatioChange(id, newRatio, mockInputs, mockSetInputs);
 
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('remainingTime');
-    expect(remainingTime).toBeNull();
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
   });
 });

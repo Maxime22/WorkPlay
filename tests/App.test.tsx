@@ -5,24 +5,34 @@ import {
   waitFor,
   screen,
 } from '@testing-library/react-native';
-import {WorkPlayApp, InputItem} from '../App.tsx';
+import {WorkPlayApp} from '../App.tsx';
+import {InputItem} from '../models/InputItem.ts';
 import {
   loadInputs,
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
-} from '../utils/StorageUtils.ts';
+  handleTimeActivityChange as handleTimeActivityChangeUtil,
+  handleRatioChange as handleRatioChangeUtils,
+} from '../utils/InputsUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
 
-jest.mock('../utils/StorageUtils.ts', () => ({
+jest.mock('../utils/InputsUtils.ts', () => ({
   loadInputs: jest.fn(),
   addInput: jest.fn(),
   deleteInput: jest.fn(),
-  loadRemainingTime: jest.fn(),
+  saveInputs: jest.fn(),
+  resetInputs: jest.fn(),
+  handleTimeActivityChange: jest.fn(),
+  handleRatioChange: jest.fn(),
+}));
+
+jest.mock('../utils/TimeUtils.ts', () => ({
   saveRemainingTime: jest.fn(),
+  loadRemainingTime: jest.fn(),
 }));
 
 jest.mock('react-native-push-notification', () => ({
@@ -48,8 +58,8 @@ describe('WorkPlayApp', () => {
 
   it('loads inputs on mount', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '', id: '1'},
-      {title: 'Task 2', value: '', id: '2'},
+      {title: 'Task 1', value: '', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -109,8 +119,8 @@ describe('WorkPlayApp', () => {
 
   it('deletes an input', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '', id: '1'},
-      {title: 'Task 2', value: '', id: '2'},
+      {title: 'Task 1', value: '', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -151,8 +161,8 @@ describe('WorkPlayApp', () => {
 
   it('disables inputs when the countdown is running and enables them when it stops', async () => {
     const mockInputs: InputItem[] = [
-      {title: 'Task 1', value: '1', id: '1'},
-      {title: 'Task 2', value: '2', id: '2'},
+      {title: 'Task 1', value: '1', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '2', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
@@ -197,6 +207,34 @@ describe('WorkPlayApp', () => {
         setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
       ) => {
         setInputs([...inputs, newInput]);
+      },
+    );
+
+    (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
+    (handleRatioChangeUtils as jest.Mock).mockImplementation(
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
       },
     );
 
@@ -272,6 +310,20 @@ describe('WorkPlayApp', () => {
       },
     );
 
+    (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
     const {getByPlaceholderText, getByText, getAllByPlaceholderText} = render(
       <WorkPlayApp />,
     );
@@ -312,6 +364,51 @@ describe('WorkPlayApp', () => {
     // Check if the countdown shows the correct total time (in seconds converted to hh:mm:ss format)
     await waitFor(() => {
       expect(getByText('00:05:00')).toBeTruthy(); // Total time is 5 minutes -> 5*60=300 seconds
+    });
+  });
+
+  it('handles ratio changes correctly', async () => {
+    const mockInputs: InputItem[] = [
+      {title: 'Task 1', value: '5', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '10', id: '2', ratio: '1'},
+    ];
+    (loadInputs as jest.Mock).mockImplementation(
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+        setInputs(mockInputs);
+      },
+    );
+
+    (handleRatioChangeUtils as jest.Mock).mockImplementation(
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
+    const {getByTestId, getByText} = render(<WorkPlayApp />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Task 1')).toBeTruthy();
+      expect(screen.getByText('Task 2')).toBeTruthy();
+    });
+
+    // Change the ratio of the first input
+    const picker = getByTestId('picker-' + mockInputs[0].id);
+    fireEvent(picker, 'onValueChange', '2');
+
+    // Simulate starting the countdown
+    fireEvent.press(getByText('Start'));
+
+    // Check if the countdown shows the correct total time (in seconds converted to hh:mm:ss format)
+    await waitFor(() => {
+      expect(getByText('00:20:00')).toBeTruthy(); // Total time is 5*2 + 10*1 = 20 minutes
     });
   });
 });
