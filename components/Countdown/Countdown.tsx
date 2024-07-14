@@ -1,10 +1,7 @@
 import {View, Text, TouchableOpacity} from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {styles} from './Countdown.style.ts';
-import {
-  loadRemainingTime,
-  saveRemainingTime,
-} from '../../utils/StorageUtils.ts';
+import {loadRemainingTime,saveRemainingTime} from '../../utils/TimeUtils.ts';
 
 type CountdownProps = {
   calculateUserTime: () => number;

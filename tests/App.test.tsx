@@ -12,6 +12,7 @@ import {
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
 } from '../utils/StorageUtils.ts';
+import {saveRemainingTime} from "../utils/TimeUtils.ts";
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
@@ -22,10 +23,13 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   loadInputs: jest.fn(),
   addInput: jest.fn(),
   deleteInput: jest.fn(),
-  loadRemainingTime: jest.fn(),
-  saveRemainingTime: jest.fn(),
   saveInputs: jest.fn(),
   resetInputs: jest.fn(),
+}));
+
+jest.mock('../utils/TimeUtils.ts', () => ({
+  saveRemainingTime: jest.fn(),
+  loadRemainingTime: jest.fn(),
 }));
 
 jest.mock('react-native-push-notification', () => ({
