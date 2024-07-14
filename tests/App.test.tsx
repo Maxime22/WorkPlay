@@ -11,20 +11,21 @@ import {
   loadInputs,
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
-} from '../utils/StorageUtils.ts';
-import {saveRemainingTime} from "../utils/TimeUtils.ts";
+  handleTimeActivityChange as handleTimeActivityChangeUtil,
+} from '../utils/InputsUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
 
-jest.mock('../utils/StorageUtils.ts', () => ({
+jest.mock('../utils/InputsUtils.ts', () => ({
   loadInputs: jest.fn(),
   addInput: jest.fn(),
   deleteInput: jest.fn(),
   saveInputs: jest.fn(),
   resetInputs: jest.fn(),
+  handleTimeActivityChange: jest.fn(),
 }));
 
 jest.mock('../utils/TimeUtils.ts', () => ({
@@ -206,6 +207,15 @@ describe('WorkPlayApp', () => {
       },
     );
 
+    (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
+        (id: string, value: string, inputs: InputItem[], setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+          const newInputs = inputs.map(input =>
+              input.id === id ? {...input, value} : input,
+          );
+          setInputs(newInputs);
+        }
+    );
+
     const {getByPlaceholderText, getByText, getAllByPlaceholderText} = render(
       <WorkPlayApp />,
     );
@@ -275,6 +285,20 @@ describe('WorkPlayApp', () => {
         setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
       ) => {
         setInputs([...inputs, newInput]);
+      },
+    );
+
+    (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
       },
     );
 

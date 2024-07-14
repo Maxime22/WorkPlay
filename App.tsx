@@ -6,9 +6,9 @@ import {
   loadInputs,
   addInput,
   deleteInput,
-  saveInputs,
   resetInputs,
-} from './utils/StorageUtils';
+  handleTimeActivityChange,
+} from './utils/InputsUtils.ts';
 import './utils/notification/PushNotificationConfig';
 import {Countdown} from './components/Countdown/Countdown.tsx';
 import {InputItem} from './models/InputItem.ts';
@@ -20,14 +20,6 @@ export const WorkPlayApp = () => {
   useEffect(() => {
     loadInputs(setInputs);
   }, []);
-
-  const handleTimeActivityChange = (id: string, value: string) => {
-    const newInputs = inputs.map(input =>
-      input.id === id ? {...input, value} : input,
-    );
-    setInputs(newInputs);
-    saveInputs(newInputs);
-  };
 
   const handleRatioChange = (id: string, ratio: string) => {
     const newInputs = inputs.map(input =>
@@ -73,7 +65,7 @@ export const WorkPlayApp = () => {
               timeActivity={item.value}
               ratio={item.ratio}
               handleRatioChange={handleRatioChange}
-              onTimeActivityChange={handleTimeActivityChange}
+              onTimeActivityChange={(id,text) => handleTimeActivityChange(id, text, inputs, setInputs)}
               isDisabled={isCountdownRunning}
             />
           )}

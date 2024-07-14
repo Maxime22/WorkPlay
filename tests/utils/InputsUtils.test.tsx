@@ -5,14 +5,15 @@ import {
   addInput,
   deleteInput,
   resetInputs,
-} from '../../utils/StorageUtils.ts';
+  handleTimeActivityChange,
+} from '../../utils/InputsUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
   getItem: jest.fn(),
   setItem: jest.fn(),
 }));
 
-describe('storageUtils', () => {
+describe('inputsUtils', () => {
   const mockInputs = [
     {title: 'Task 1', value: 'Value 1', id: '1', ratio: '1'},
     {title: 'Task 2', value: 'Value 2', id: '2', ratio: '1'},
@@ -85,6 +86,23 @@ describe('storageUtils', () => {
     const expectedInputs = mockInputs.map(input => ({...input, value: '0'}));
 
     resetInputs(mockInputs, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
+  });
+
+  it('handles time activity change correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const id = '1';
+    const newValue = 'New Value 1';
+    const expectedInputs = mockInputs.map(input =>
+      input.id === id ? {...input, value: newValue} : input,
+    );
+
+    handleTimeActivityChange(id, newValue, mockInputs, mockSetInputs);
 
     expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(

@@ -51,3 +51,16 @@ export const resetInputs = (
   setInputs(newInputs);
   saveInputs(newInputs);
 };
+
+export const handleTimeActivityChange = (
+  id: string,
+  value: string,
+  inputs: InputItem[],
+  setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+) => {
+  const newInputs = inputs.map(input =>
+    input.id === id ? {...input, value} : input,
+  );
+  setInputs(newInputs);
+  saveInputs(newInputs);
+};
