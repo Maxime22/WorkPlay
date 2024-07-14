@@ -5,7 +5,8 @@ import {
   waitFor,
   screen,
 } from '@testing-library/react-native';
-import {WorkPlayApp, InputItem} from '../App.tsx';
+import {WorkPlayApp} from '../App.tsx';
+import {InputItem} from '../models/InputItem.ts';
 import {
   loadInputs,
   addInput as addInputUtil,
@@ -24,6 +25,7 @@ jest.mock('../utils/StorageUtils.ts', () => ({
   loadRemainingTime: jest.fn(),
   saveRemainingTime: jest.fn(),
   saveInputs: jest.fn(),
+  resetInputs: jest.fn(),
 }));
 
 jest.mock('react-native-push-notification', () => ({

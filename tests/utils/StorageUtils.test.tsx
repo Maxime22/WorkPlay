@@ -6,6 +6,7 @@ import {
   deleteInput,
   loadRemainingTime,
   saveRemainingTime,
+  resetInputs,
 } from '../../utils/StorageUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -15,8 +16,8 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 
 describe('storageUtils', () => {
   const mockInputs = [
-    {title: 'Task 1', value: 'Value 1', id: '1'},
-    {title: 'Task 2', value: 'Value 2', id: '2'},
+    {title: 'Task 1', value: 'Value 1', id: '1', ratio: '1'},
+    {title: 'Task 2', value: 'Value 2', id: '2', ratio: '1'},
   ];
 
   beforeEach(() => {
@@ -56,7 +57,7 @@ describe('storageUtils', () => {
 
   it('adds an input correctly', async () => {
     const mockSetInputs = jest.fn();
-    const newInput = {title: 'Task 3', value: 'Value 3', id: '3'};
+    const newInput = {title: 'Task 3', value: 'Value 3', id: '3', ratio: '1'};
     const expectedInputs = [...mockInputs, newInput];
 
     addInput(mockInputs, newInput, mockSetInputs);
@@ -117,5 +118,18 @@ describe('storageUtils', () => {
 
     expect(AsyncStorage.getItem).toHaveBeenCalledWith('remainingTime');
     expect(remainingTime).toBeNull();
+  });
+
+  it('resets inputs correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const expectedInputs = mockInputs.map(input => ({...input, value: '0'}));
+
+    resetInputs(mockInputs, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
   });
 });
