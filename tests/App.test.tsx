@@ -12,6 +12,7 @@ import {
   addInput as addInputUtil,
   deleteInput as deleteInputUtil,
   handleTimeActivityChange as handleTimeActivityChangeUtil,
+  handleRatioChange as handleRatioChangeUtils,
 } from '../utils/InputsUtils.ts';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -26,6 +27,7 @@ jest.mock('../utils/InputsUtils.ts', () => ({
   saveInputs: jest.fn(),
   resetInputs: jest.fn(),
   handleTimeActivityChange: jest.fn(),
+  handleRatioChange: jest.fn(),
 }));
 
 jest.mock('../utils/TimeUtils.ts', () => ({
@@ -208,12 +210,31 @@ describe('WorkPlayApp', () => {
     );
 
     (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
-        (id: string, value: string, inputs: InputItem[], setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
-          const newInputs = inputs.map(input =>
-              input.id === id ? {...input, value} : input,
-          );
-          setInputs(newInputs);
-        }
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
+    (handleRatioChangeUtils as jest.Mock).mockImplementation(
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
+      },
     );
 
     const {getByPlaceholderText, getByText, getAllByPlaceholderText} = render(
@@ -353,6 +374,20 @@ describe('WorkPlayApp', () => {
     (loadInputs as jest.Mock).mockImplementation(
       async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
         setInputs(mockInputs);
+      },
+    );
+
+    (handleRatioChangeUtils as jest.Mock).mockImplementation(
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
       },
     );
 

@@ -64,3 +64,16 @@ export const handleTimeActivityChange = (
   setInputs(newInputs);
   saveInputs(newInputs);
 };
+
+export const handleRatioChange = (
+  id: string,
+  ratio: string,
+  inputs: InputItem[],
+  setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+) => {
+  const newInputs = inputs.map(input =>
+    input.id === id ? {...input, ratio} : input,
+  );
+  setInputs(newInputs);
+  saveInputs(newInputs);
+};

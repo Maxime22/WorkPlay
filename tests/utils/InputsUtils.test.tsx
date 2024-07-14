@@ -5,6 +5,7 @@ import {
   addInput,
   deleteInput,
   resetInputs,
+  handleRatioChange,
   handleTimeActivityChange,
 } from '../../utils/InputsUtils.ts';
 
@@ -103,6 +104,23 @@ describe('inputsUtils', () => {
     );
 
     handleTimeActivityChange(id, newValue, mockInputs, mockSetInputs);
+
+    expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      'inputs',
+      JSON.stringify(expectedInputs),
+    );
+  });
+
+  it('handles ratio change correctly', async () => {
+    const mockSetInputs = jest.fn();
+    const id = '2';
+    const newRatio = '2';
+    const expectedInputs = mockInputs.map(input =>
+      input.id === id ? {...input, ratio: newRatio} : input,
+    );
+
+    handleRatioChange(id, newRatio, mockInputs, mockSetInputs);
 
     expect(mockSetInputs).toHaveBeenCalledWith(expectedInputs);
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
