@@ -16,7 +16,7 @@ export const Countdown = ({
   resetInputs,
   onStart,
   onStop,
-    isCountdownRunning
+  isCountdownRunning,
 }: CountdownProps) => {
   const [time, setTime] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -81,14 +81,14 @@ export const Countdown = ({
   }
 
   function resetCountdown() {
-      setRemainingTime(0);
-      setAccumulatedTime(0);
-      saveRemainingTime(0);
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      setTime(0);
-      onStop();
+    setRemainingTime(0);
+    setAccumulatedTime(0);
+    saveRemainingTime(0);
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    setTime(0);
+    onStop();
   }
 
   const formatTime = (totalSeconds: number) => {
@@ -102,16 +102,18 @@ export const Countdown = ({
 
   return (
     <View style={styles.countdownContainer}>
-      <Text style={styles.countdownText}>{formatTime(isCountdownRunning ? time : remainingTime)}</Text>
+      <Text style={styles.countdownText}>
+        {formatTime(isCountdownRunning ? time : remainingTime)}
+      </Text>
       <View style={styles.startAndStopButtonContainer}>
         {isCountdownRunning ? (
-                <TouchableOpacity style={styles.stopButton} onPress={stopCountdown}>
-                  <Text style={styles.buttonText}>Pause</Text>
-                </TouchableOpacity>
-            ) : (
-                <TouchableOpacity style={styles.startButton} onPress={startCountdown}>
-                  <Text style={styles.buttonText}>Start</Text>
-                </TouchableOpacity>
+          <TouchableOpacity style={styles.stopButton} onPress={stopCountdown}>
+            <Text style={styles.buttonText}>Pause</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.startButton} onPress={startCountdown}>
+            <Text style={styles.buttonText}>Start</Text>
+          </TouchableOpacity>
         )}
         <TouchableOpacity style={styles.resetButton} onPress={resetCountdown}>
           <Text style={styles.buttonText}>Reset</Text>

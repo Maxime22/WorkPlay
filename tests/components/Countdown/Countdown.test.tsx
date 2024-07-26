@@ -67,13 +67,13 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={mockOnStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={mockOnStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
 
@@ -134,13 +134,13 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={handleStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={handleStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
 
@@ -174,13 +174,13 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={handleStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={handleStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
     const {getByText} = render(<TestComponent />);
@@ -212,20 +212,18 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={handleStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={handleStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
     const {getByText} = render(<TestComponent />);
 
-    await waitFor(() =>
-      expect(getByText('00:00:50')).toBeTruthy(),
-    ); // 60 seconds - 10 seconds elapsed
+    await waitFor(() => expect(getByText('00:00:50')).toBeTruthy()); // 60 seconds - 10 seconds elapsed
   });
 
   it('continues countdown from loaded remaining time', async () => {
@@ -247,20 +245,18 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={handleStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={handleStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
     const {getByText} = render(<TestComponent />);
 
-    await waitFor(() =>
-      expect(getByText('00:01:00')).toBeTruthy(),
-    );
+    await waitFor(() => expect(getByText('00:01:00')).toBeTruthy());
 
     fireEvent.press(getByText('Start'));
 
@@ -287,13 +283,13 @@ describe('Countdown Component', () => {
       };
 
       return (
-          <Countdown
-              calculateUserTime={mockCalculateUserTime}
-              resetInputs={mockResetInputs}
-              onStart={handleStart}
-              onStop={handleStop}
-              isCountdownRunning={isCountdownRunning}
-          />
+        <Countdown
+          calculateUserTime={mockCalculateUserTime}
+          resetInputs={mockResetInputs}
+          onStart={handleStart}
+          onStop={handleStop}
+          isCountdownRunning={isCountdownRunning}
+        />
       );
     };
     const {getByText} = render(<TestComponent />);
@@ -356,13 +352,13 @@ describe('Countdown Component', () => {
   it('resets the countdown when the Reset button is pressed', () => {
     mockCalculateUserTime.mockReturnValue(ONE_MINUTE);
     const {getByText} = render(
-        <Countdown
-            calculateUserTime={mockCalculateUserTime}
-            resetInputs={mockResetInputs}
-            onStart={mockOnStart}
-            onStop={mockOnStop}
-            isCountdownRunning={false}
-        />,
+      <Countdown
+        calculateUserTime={mockCalculateUserTime}
+        resetInputs={mockResetInputs}
+        onStart={mockOnStart}
+        onStop={mockOnStop}
+        isCountdownRunning={false}
+      />,
     );
 
     fireEvent.press(getByText('Start'));
@@ -375,8 +371,8 @@ describe('Countdown Component', () => {
 
     expect(mockOnStop).toHaveBeenCalled();
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-        'remainingTime',
-        expect.stringMatching(/{"time":0,"timestamp":[0-9]+}/),
+      'remainingTime',
+      expect.stringMatching(/{"time":0,"timestamp":[0-9]+}/),
     );
     expect(getByText('00:00:00')).toBeTruthy();
   });
