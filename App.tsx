@@ -46,6 +46,7 @@ export const WorkPlayApp = () => {
           onStop={() => {
             setIsCountdownRunning(false);
           }}
+          isCountdownRunning={isCountdownRunning}
         />
         <FlatList
           data={inputs}
