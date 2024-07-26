@@ -184,7 +184,7 @@ describe('WorkPlayApp', () => {
       expect(input.props.editable).toBe(false);
     });
 
-    fireEvent.press(screen.getByText('Stop'));
+    fireEvent.press(screen.getByText('Pause'));
 
     textInputs.forEach(input => {
       expect(input.props.editable).toBe(true);

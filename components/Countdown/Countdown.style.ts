@@ -29,6 +29,13 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  resetButton: {
+    width: 120,
+    height: 60,
+    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   buttonText: {
     color: 'white',
     fontSize: 24,
