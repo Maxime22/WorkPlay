@@ -258,4 +258,32 @@ describe('Countdown Component', () => {
     expect(getByText('00:00:00')).toBeTruthy();
     expect(getByText('Temps restant : 00:00:00')).toBeTruthy();
   });
+
+  it('resets the countdown when the Reset button is pressed', () => {
+    mockCalculateUserTime.mockReturnValue(ONE_MINUTE);
+    const {getByText} = render(
+        <Countdown
+            calculateUserTime={mockCalculateUserTime}
+            resetInputs={mockResetInputs}
+            onStart={mockOnStart}
+            onStop={mockOnStop}
+        />,
+    );
+
+    fireEvent.press(getByText('Start'));
+
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+
+    fireEvent.press(getByText('Reset'));
+
+    expect(mockOnStop).toHaveBeenCalled();
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+        'remainingTime',
+        expect.stringMatching(/{"time":0,"timestamp":[0-9]+}/),
+    );
+    expect(getByText('00:00:00')).toBeTruthy();
+    expect(getByText('Temps restant : 00:00:00')).toBeTruthy();
+  });
 });

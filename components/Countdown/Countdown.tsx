@@ -79,6 +79,17 @@ export const Countdown = ({
     }
   }
 
+  function resetCountdown() {
+      setRemainingTime(0);
+      setAccumulatedTime(0);
+      saveRemainingTime(0);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      setTime(0);
+      onStop();
+  }
+
   const formatTime = (totalSeconds: number) => {
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -97,6 +108,9 @@ export const Countdown = ({
         </TouchableOpacity>
         <TouchableOpacity style={styles.stopButton} onPress={stopCountdown}>
           <Text style={styles.buttonText}>Stop</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.resetButton} onPress={resetCountdown}>
+          <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.remainingTimeText}>
