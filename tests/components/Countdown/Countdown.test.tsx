@@ -229,7 +229,7 @@ describe('Countdown Component', () => {
   it('continues countdown from loaded remaining time', async () => {
     mockCalculateUserTime.mockReturnValue(ONE_MINUTE);
     AsyncStorage.getItem.mockResolvedValueOnce(
-      JSON.stringify({time: 70, timestamp: new Date().getTime() - 10000}),
+      JSON.stringify({time: 80, timestamp: new Date().getTime() - 10000}),
     );
 
     const TestComponent = () => {
@@ -256,7 +256,7 @@ describe('Countdown Component', () => {
     };
     const {getByText} = render(<TestComponent />);
 
-    await waitFor(() => expect(getByText('00:01:00')).toBeTruthy());
+    await waitFor(() => expect(getByText('00:01:10')).toBeTruthy());
 
     fireEvent.press(getByText('Start'));
 
@@ -264,7 +264,7 @@ describe('Countdown Component', () => {
       jest.advanceTimersByTime(1000);
     });
 
-    expect(getByText('00:00:59')).toBeTruthy();
+    expect(getByText('00:02:09')).toBeTruthy();
   });
 
   it('saves remaining time on stop', async () => {
