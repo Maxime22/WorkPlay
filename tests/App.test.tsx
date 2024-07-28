@@ -418,41 +418,41 @@ describe('WorkPlayApp', () => {
       {title: 'Task 2', value: '10', id: '2', ratio: '1'},
     ];
     (loadInputs as jest.Mock).mockImplementation(
-        async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
-          setInputs(mockInputs);
-        },
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+        setInputs(mockInputs);
+      },
     );
 
     (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
-        (
-            id: string,
-            value: string,
-            inputs: InputItem[],
-            setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
-        ) => {
-          const newInputs = inputs.map(input =>
-              input.id === id ? {...input, value} : input,
-          );
-          setInputs(newInputs);
-        },
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
+      },
     );
 
     (handleRatioChangeUtils as jest.Mock).mockImplementation(
-        (
-            id: string,
-            ratio: string,
-            inputs: InputItem[],
-            setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
-        ) => {
-          const newInputs = inputs.map(input =>
-              input.id === id ? {...input, ratio} : input,
-          );
-          setInputs(newInputs);
-        },
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
+      },
     );
 
     const {getByTestId, getByText, getAllByPlaceholderText} = render(
-        <WorkPlayApp />,
+      <WorkPlayApp />,
     );
 
     // Wait for inputs to be loaded
@@ -462,7 +462,9 @@ describe('WorkPlayApp', () => {
     });
 
     // Check initial calculated time
-    expect(getByText('Temps qui va s\'ajouter au compteur au prochain start : 15')).toBeTruthy();
+    expect(
+      getByText("Temps qui va s'ajouter au compteur au prochain start : 15"),
+    ).toBeTruthy();
 
     // Change the value of the first input
     const textInputs = getAllByPlaceholderText('Enter value');
@@ -470,7 +472,9 @@ describe('WorkPlayApp', () => {
 
     // Wait for the displayed time to update
     await waitFor(() => {
-      expect(getByText('Temps qui va s\'ajouter au compteur au prochain start : 30')).toBeTruthy();
+      expect(
+        getByText("Temps qui va s'ajouter au compteur au prochain start : 30"),
+      ).toBeTruthy();
     });
 
     // Change the ratio of the first input
@@ -479,7 +483,9 @@ describe('WorkPlayApp', () => {
 
     // Wait for the displayed time to update
     await waitFor(() => {
-      expect(getByText('Temps qui va s\'ajouter au compteur au prochain start : 50')).toBeTruthy();
+      expect(
+        getByText("Temps qui va s'ajouter au compteur au prochain start : 50"),
+      ).toBeTruthy();
     });
   });
 });

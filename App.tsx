@@ -22,21 +22,21 @@ export const WorkPlayApp = () => {
     loadInputs(setInputs);
   }, []);
 
-    useEffect(() => {
-        calculateUserTime();
-    }, [inputs]);
+  const calculateUserTime = useCallback((): number => {
+    if (inputs !== undefined && inputs.length > 0) {
+      return inputs.reduce((total, input) => {
+        const value = parseFloat(input.value);
+        const ratio = parseFloat(input.ratio);
+        return !isNaN(value) && !isNaN(ratio) ? total + value * ratio : total;
+      }, 0);
+    } else {
+      return 0;
+    }
+  }, [inputs]);
 
-    const calculateUserTime = useCallback((): number => {
-        if (inputs !== undefined && inputs.length > 0) {
-            return inputs.reduce((total, input) => {
-                const value = parseFloat(input.value);
-                const ratio = parseFloat(input.ratio);
-                return !isNaN(value) && !isNaN(ratio) ? total + value * ratio : total;
-            }, 0);
-        } else {
-            return 0;
-        }
-    }, [inputs]);
+  useEffect(() => {
+    calculateUserTime();
+  }, [inputs, calculateUserTime]);
 
   return (
     <SafeAreaView className="flex-1">
@@ -52,7 +52,10 @@ export const WorkPlayApp = () => {
           }}
           isCountdownRunning={isCountdownRunning}
         />
-          <Text>Temps qui va s'ajouter au compteur au prochain start : {calculateUserTime()}</Text>
+        <Text>
+          Temps qui va s'ajouter au compteur au prochain start :{' '}
+          {calculateUserTime()}
+        </Text>
         <FlatList
           data={inputs}
           keyExtractor={item => item.id}
