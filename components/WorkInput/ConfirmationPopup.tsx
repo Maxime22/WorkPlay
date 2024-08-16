@@ -14,10 +14,7 @@ const ConfirmationPopup = ({
   onCancel,
 }: ConfirmationPopupProps) => {
   return (
-    <Modal
-      transparent={true}
-      visible={visible}
-      onRequestClose={onCancel}>
+    <Modal transparent={true} visible={visible} onRequestClose={onCancel}>
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <Text style={styles.modalText}>Supprimer ?</Text>
