@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {FlatList, View, SafeAreaView} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {FlatList, View, SafeAreaView, Text} from 'react-native';
 import {AddActivity} from './components/AddActivity/AddActivity';
 import {WorkInput} from './components/WorkInput/WorkInput';
 import {
@@ -22,7 +22,7 @@ export const WorkPlayApp = () => {
     loadInputs(setInputs);
   }, []);
 
-  const calculateUserTime = (): number => {
+  const calculateUserTime = useCallback((): number => {
     if (inputs !== undefined && inputs.length > 0) {
       return inputs.reduce((total, input) => {
         const value = parseFloat(input.value);
@@ -32,7 +32,11 @@ export const WorkPlayApp = () => {
     } else {
       return 0;
     }
-  };
+  }, [inputs]);
+
+  useEffect(() => {
+    calculateUserTime();
+  }, [inputs, calculateUserTime]);
 
   return (
     <SafeAreaView className="flex-1">
@@ -48,6 +52,10 @@ export const WorkPlayApp = () => {
           }}
           isCountdownRunning={isCountdownRunning}
         />
+        <Text>
+          Temps qui va s'ajouter au compteur au prochain start :{' '}
+          {calculateUserTime()}
+        </Text>
         <FlatList
           data={inputs}
           keyExtractor={item => item.id}

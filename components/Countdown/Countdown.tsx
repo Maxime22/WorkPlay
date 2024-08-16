@@ -20,7 +20,6 @@ export const Countdown = ({
 }: CountdownProps) => {
   const [time, setTime] = useState(0);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [accumulatedTime, setAccumulatedTime] = useState(0);
   const [remainingTime, setRemainingTime] = useState<number>(0);
 
   useEffect(() => {
@@ -42,12 +41,11 @@ export const Countdown = ({
 
   function startCountdown() {
     const userTime = calculateUserTime() * 60;
-    const totalTime = userTime + accumulatedTime;
+    const totalTime = userTime + remainingTime;
     if (totalTime > 0) {
       resetInputs();
       setTime(totalTime);
       setRemainingTime(0);
-      setAccumulatedTime(0);
       onStart();
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -71,7 +69,6 @@ export const Countdown = ({
   function stopCountdown() {
     if (time > 0) {
       setRemainingTime(time);
-      setAccumulatedTime(time);
       saveRemainingTime(time);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -82,7 +79,6 @@ export const Countdown = ({
 
   function resetCountdown() {
     setRemainingTime(0);
-    setAccumulatedTime(0);
     saveRemainingTime(0);
     if (intervalRef.current) {
       clearInterval(intervalRef.current);

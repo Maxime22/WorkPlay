@@ -411,4 +411,81 @@ describe('WorkPlayApp', () => {
       expect(getByText('00:20:00')).toBeTruthy(); // Total time is 5*2 + 10*1 = 20 minutes
     });
   });
+
+  it('updates the displayed time when inputs or ratios change', async () => {
+    const mockInputs: InputItem[] = [
+      {title: 'Task 1', value: '5', id: '1', ratio: '1'},
+      {title: 'Task 2', value: '10', id: '2', ratio: '1'},
+    ];
+    (loadInputs as jest.Mock).mockImplementation(
+      async (setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>) => {
+        setInputs(mockInputs);
+      },
+    );
+
+    (handleTimeActivityChangeUtil as jest.Mock).mockImplementation(
+      (
+        id: string,
+        value: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, value} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
+    (handleRatioChangeUtils as jest.Mock).mockImplementation(
+      (
+        id: string,
+        ratio: string,
+        inputs: InputItem[],
+        setInputs: React.Dispatch<React.SetStateAction<InputItem[]>>,
+      ) => {
+        const newInputs = inputs.map(input =>
+          input.id === id ? {...input, ratio} : input,
+        );
+        setInputs(newInputs);
+      },
+    );
+
+    const {getByTestId, getByText, getAllByPlaceholderText} = render(
+      <WorkPlayApp />,
+    );
+
+    // Wait for inputs to be loaded
+    await waitFor(() => {
+      expect(getByText('Task 1')).toBeTruthy();
+      expect(getByText('Task 2')).toBeTruthy();
+    });
+
+    // Check initial calculated time
+    expect(
+      getByText("Temps qui va s'ajouter au compteur au prochain start : 15"),
+    ).toBeTruthy();
+
+    // Change the value of the first input
+    const textInputs = getAllByPlaceholderText('Enter value');
+    fireEvent.changeText(textInputs[0], '20');
+
+    // Wait for the displayed time to update
+    await waitFor(() => {
+      expect(
+        getByText("Temps qui va s'ajouter au compteur au prochain start : 30"),
+      ).toBeTruthy();
+    });
+
+    // Change the ratio of the first input
+    const picker = getByTestId('picker-' + mockInputs[0].id);
+    fireEvent(picker, 'onValueChange', '2');
+
+    // Wait for the displayed time to update
+    await waitFor(() => {
+      expect(
+        getByText("Temps qui va s'ajouter au compteur au prochain start : 50"),
+      ).toBeTruthy();
+    });
+  });
 });
