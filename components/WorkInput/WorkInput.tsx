@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {styles} from './WorkInput.style.ts';
-import {TimeDifficultyRatio} from '../TimeDifficultyRatio/TimeDifficultyRatio.tsx';
+import {styles} from './WorkInput.style';
+import {TimeDifficultyRatio} from '../TimeDifficultyRatio/TimeDifficultyRatio';
+import ConfirmationPopup from './ConfirmationPopup';
 
 type WorkInputProps = {
   inputTitle: string;
@@ -13,6 +14,7 @@ type WorkInputProps = {
   onTimeActivityChange: (id: string, value: string) => void;
   isDisabled: boolean;
 };
+
 export const WorkInput = ({
   inputTitle,
   id,
@@ -23,6 +25,13 @@ export const WorkInput = ({
   onTimeActivityChange,
   isDisabled,
 }: WorkInputProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleDelete = () => {
+    deleteInput();
+    setModalVisible(false);
+  };
+
   return (
     <View key={id} style={styles.inputContainer}>
       <Text style={styles.inputTitle}>{inputTitle}</Text>
@@ -40,9 +49,16 @@ export const WorkInput = ({
         onRatioChange={value => handleRatioChange(id, value)}
         id={`${id}`}
       />
-      <TouchableOpacity onPress={deleteInput} style={styles.deleteButton}>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={styles.deleteButton}>
         <Text style={styles.deleteButtonText}>Delete</Text>
       </TouchableOpacity>
+      <ConfirmationPopup
+        visible={modalVisible}
+        onConfirm={handleDelete}
+        onCancel={() => setModalVisible(false)}
+      />
     </View>
   );
 };

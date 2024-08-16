@@ -144,19 +144,30 @@ describe('WorkPlayApp', () => {
       expect(screen.getByText('Task 2')).toBeTruthy();
     });
 
+    // Step 1: Press delete button to open confirmation popup
     const deleteButtons = screen.getAllByText('Delete');
     fireEvent.press(deleteButtons[0]);
 
     await waitFor(() => {
+      // Step 2: Ensure confirmation popup is visible
+      expect(screen.getByText('Supprimer ?')).toBeTruthy();
+    });
+
+    // Step 3: Confirm deletion
+    fireEvent.press(screen.getByText('Oui'));
+
+    await waitFor(() => {
+      // Step 4: Verify deleteInputUtil is called with correct arguments
+      expect(deleteInputUtil).toHaveBeenCalledWith(
+        mockInputs,
+        '1',
+        expect.any(Function),
+      );
+
+      // Step 5: Verify the item is removed from UI
       expect(screen.queryByText('Task 1')).toBeNull();
       expect(screen.getByText('Task 2')).toBeTruthy();
     });
-
-    expect(deleteInputUtil).toHaveBeenCalledWith(
-      mockInputs,
-      '1',
-      expect.any(Function),
-    );
   });
 
   it('disables inputs when the countdown is running and enables them when it stops', async () => {
