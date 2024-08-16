@@ -6,6 +6,10 @@ describe('ConfirmationPopup', () => {
   const mockOnConfirm = jest.fn();
   const mockOnCancel = jest.fn();
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   const props = {
     visible: true,
     onConfirm: mockOnConfirm,
@@ -23,7 +27,7 @@ describe('ConfirmationPopup', () => {
     const {queryByText} = render(
       <ConfirmationPopup {...props} visible={false} />,
     );
-    expect(queryByText('Supprimer ?')).toBeFalsy();
+    expect(queryByText('Supprimer ?')).toBeNull();
   });
 
   it('calls onCancel when Non button is pressed', () => {

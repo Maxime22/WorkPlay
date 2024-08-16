@@ -16,7 +16,6 @@ const ConfirmationPopup = ({
   return (
     <Modal
       transparent={true}
-      animationType="slide"
       visible={visible}
       onRequestClose={onCancel}>
       <View style={styles.modalBackground}>

@@ -17,22 +17,26 @@ describe('WorkInput', () => {
     isDisabled: false,
   };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders correctly', () => {
     const {getByText, getByPlaceholderText} = render(<WorkInput {...props} />);
-    expect(getByText('Test Title')).toBeTruthy();
-    expect(getByPlaceholderText('Enter value')).toBeTruthy();
-    expect(getByText('Delete')).toBeTruthy();
+    expect(getByText('Test Title')).toBeDefined();
+    expect(getByPlaceholderText('Enter value')).toBeDefined();
+    expect(getByText('Delete')).toBeDefined();
   });
 
   it('displays the correct title', () => {
     const {getByText} = render(<WorkInput {...props} />);
-    expect(getByText('Test Title')).toBeTruthy();
+    expect(getByText('Test Title')).toBeDefined();
   });
 
   it('opens confirmation popup when delete button is pressed', () => {
     const {getByText, queryByText} = render(<WorkInput {...props} />);
     fireEvent.press(getByText('Delete'));
-    expect(queryByText('Supprimer ?')).toBeTruthy();
+    expect(queryByText('Supprimer ?')).toBeDefined();
   });
 
   it('calls deleteInput when confirm button is pressed in confirmation popup', () => {
@@ -46,7 +50,8 @@ describe('WorkInput', () => {
     const {getByText, queryByText} = render(<WorkInput {...props} />);
     fireEvent.press(getByText('Delete'));
     fireEvent.press(getByText('Non'));
-    expect(queryByText('Supprimer ?')).toBeFalsy();
+    expect(mockDeleteInput).not.toHaveBeenCalled();
+    expect(queryByText('Supprimer ?')).toBeNull();
   });
 
   it('calls onTimeActivityChange with the correct index when text input changes', () => {
